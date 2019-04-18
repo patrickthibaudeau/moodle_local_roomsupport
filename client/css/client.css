@@ -1,0 +1,22 @@
+.btn-fullscreen {
+    width: 100%;
+    min-height: 300px;
+    font-size: 6em;
+    padding-top: 20%;
+
+}
+
+.mt-10 {
+    margin-top: 5rem;
+}
+
+.navbar {
+    position: fixed; /* Set the navbar to fixed position */
+    bottom: 0; /* Position the navbar at the bottom of the page */
+    width: 100%; /* Full width */
+}
+
+.img-responsive {
+  max-width: 100%;
+  height: auto;
+}

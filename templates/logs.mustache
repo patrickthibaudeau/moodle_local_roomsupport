@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col">
+        <h2>{{#str}}logs, local_roomsupport{{/str}} 
+            <span class="float-right">
+                <a href="../index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}} ">
+                    {{#str}}dashboard, local_roomsupport{{/str}} 
+                </a>
+            </span>
+        </h2>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    {{#str}}id, local_roomsupport{{/str}}
+                </th>
+                <th>
+                    {{#str}}room, local_roomsupport{{/str}}
+                </th>
+                <th>
+                    {{#str}}timecreated, local_roomsupport{{/str}}
+                </th>
+                <th>
+                    {{#str}}agent, local_roomsupport{{/str}}
+                </th>
+                <th>
+                    {{#str}}timereplied, local_roomsupport{{/str}}
+                </th>
+                <th>
+                    {{#str}}timeclosed, local_roomsupport{{/str}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#stats}}
+            <tr>
+                <td>
+                    {{id}}
+                </td>
+                <td>
+                    {{room}}
+                </td>
+                <td>
+                    {{timecreated}}
+                </td>
+                <td>
+                    {{agent}}
+                </td>
+                <td>
+                    {{timereplied}}
+                </td>
+                <td>
+                    {{timeclosed}}
+                </td>
+            </tr>
+            {{/stats}}
+        </tbody>
+    </table>
+</div>
+
+

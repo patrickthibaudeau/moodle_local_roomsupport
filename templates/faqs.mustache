@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="float-right">
+            <a href="faq.php?id=0" class="btn btn-outline-success" title="{{#str}}new_template, local_roomsupport{{/str}}">{{#str}}new_template, local_roomsupport{{/str}}</a>
+            <a href="index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}}">{{#str}}dashboard, local_roomsupport{{/str}}</a>
+        </div>
+    </div>
+</div>
+<div class="card-body">   
+    <div class="card-deck">
+        {{#faqs}}
+        <div class="card">
+            <div class="card-header ">
+                {{{name}}}
+            </div>
+            <div class="card-body">
+                {{#lang}}
+                {{{message_fr}}}
+                {{/lang}}
+                {{^lang}}
+                {{{message_en}}}
+                {{/lang}}                
+            </div>
+            <div class="card-footer">
+                <a href="faq.php?id={{{id}}}" class="editFaq btn btn-outline-primary" title="{{#str}}edit, local_roomsupport{{/str}}">
+                    <i class="fa fa-edit" ></i>
+                </a>
+
+                <a href="javascript:void(0);"  class="deleteFaq btn btn-outline-danger" data-id="{{{id}}}" title="{{#str}}delete, local_roomsupport{{/str}}">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        {{/faqs}}
+    </div>
+</div>
+
+{{> local_roomsupport/delete_modal }}
+{{#js}}
+require(['local_roomsupport/faqs'], function(mod) {
+mod.init();
+});
+{{/js}}

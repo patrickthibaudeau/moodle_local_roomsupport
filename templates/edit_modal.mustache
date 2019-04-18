@@ -1,0 +1,47 @@
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">{{#str}}edit, local_roomsupport{{/str}} <span id="edit-name"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">                        
+                        <div id="edit-content">
+                            <form id="editPiForm">
+                                <input type="hidden" name="id" id="piId" value="">
+                                <div class="form-group">
+                                    <label for="buildingLongName">{{#str}}building_name, local_roomsupport{{/str}}</label>
+                                    <input type="text" class="form-control" id="buildingLongName" name="building_name" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="buildingShortName">{{#str}}building_abbreviation, local_roomsupport{{/str}}</label>
+                                    <input type="text" class="form-control" id="buildingShortName" name="building_shortname" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="roomNumber">{{#str}}room_number, local_roomsupport{{/str}}</label>
+                                    <input type="text" class="form-control" id="roomNumber" name="room_number" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="faqId">{{#str}}associated_faq, local_roomsupport{{/str}}</label>
+                                    <select class="form-control" id="faqId" name="faqid">
+                                        {{#faqs}}
+                                        <option value="{{id}}">{{name}}</option>
+                                        {{/faqs}}
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" id="savePiBtn">{{#str}}save, local_roomsupport{{/str}}</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,28 @@
+<div class="modal fade" id="detailsModal{{{id}}}" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header {{#status}}bg-success{{/status}}{{^status}}bg-danger{{/status}}">
+                <h5 class="modal-title" id="detailsModalLabel{{{id}}}">{{#str}}details, local_roomsupport{{/str}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">                        
+                        <div id="details-content">
+                            <ul class="list-group">
+                                <li class="list-group-item">{{#str}}room_number, local_roomsupport{{/str}}: {{{room}}}</li>
+                                <li class="list-group-item">{{#str}}mac_address, local_roomsupport{{/str}}: {{{mac}}}</li>
+                                <li class="list-group-item">{{#str}}ip_address, local_roomsupport{{/str}}: {{{ip}}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">{{#str}}close, local_roomsupport{{/str}}</button>
+            </div>
+        </div>
+    </div>
+</div> 

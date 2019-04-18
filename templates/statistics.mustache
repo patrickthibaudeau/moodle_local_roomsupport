@@ -1,0 +1,98 @@
+<input type="hidden" id="startDate" value="{{{startDate}}}">
+<input type="hidden" id="endDate" value="{{{endDate}}}">
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <div class="h2">{{#str}}statistics, local_roomsupport{{/str}}</div>
+            </div>
+            <div class="col">
+                <div class="form-row float-right">
+                    <div class="col-auto">
+                        <div class="input-group mr-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                            <input type="text" id="dateRange" value="" class="form-control" placeholder="{{#str}}search, local_roomsupport{{/str}}">
+                        </div>
+                    </div>
+<!--                    <div class="col-auto">
+                        <a href="javascript:void(0);" class="btn btn-outline-primary" title=" ">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </div>-->
+                    <div class="col-auto">                
+                        <a href="../index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}} ">
+                            {{#str}}dashboard, local_roomsupport{{/str}} 
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{#str}}calls_per_room, local_roomsupport{{/str}}</h3>
+            </div>
+            <div class="card-body">
+                {{{callsToRoom}}}
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{#str}}number_of_calls_answered, local_roomsupport{{/str}}</h3>
+            </div>
+            <div class="card-body">
+                {{{agents}}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{#str}}response_times, local_roomsupport{{/str}}</h3>
+            </div>
+            <div class="card-body">                
+                <div class="card-deck">                    
+                    <div class="card">
+                        <div class="card-body text-center" >
+                            <h3>{{#str}}total_calls, local_roomsupport{{/str}}</h3>
+                            <h2>{{{totalCalls}}}</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center" >
+                            <h3>{{#str}}average_time_to_reply, local_roomsupport{{/str}}</h3>
+                            <h2>{{{averageResponse}}}</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3>{{#str}}shortest_time_to_reply, local_roomsupport{{/str}}</h3>
+                            <h2 style="color: green;">{{{shortestResponse}}}</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h3>{{#str}}longest_time_to_reply, local_roomsupport{{/str}}</h3>
+                            <h2 style="color: red;">{{{longestResponse}}}</h2>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#js}}
+require(['local_roomsupport/statistics'], function(mod) {
+mod.init();
+});
+{{/js}}

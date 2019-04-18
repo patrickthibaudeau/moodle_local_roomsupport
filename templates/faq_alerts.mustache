@@ -1,0 +1,11 @@
+{{#alerts}}
+<div class="card offline mt-2">
+   <div class="card-body">
+       <h4>{{{room}}} {{#str}}requires_assistance, local_roomsupport{{/str}}</h4>
+       {{#str}}requested_at, local_roomsupport{{/str}}: {{{timecreated}}}<br>
+       {{#str}}agent, local_roomsupport{{/str}}: {{#agent}}{{{agent}}}{{/agent}} 
+       {{^agent}} {{#str}}no_agent_assigned, local_roomsupport{{/str}} <a href="javascript:void(0);" class="btn btn-primary onMyWay" data-id="{{{id}}}" title="{{#str}}on_my_way, local_roomsupport{{/str}}">{{#str}}on_my_way, local_roomsupport{{/str}}</a>
+       {{/agent}}
+   </div>
+</div>
+{{/alerts}}

@@ -180,5 +180,50 @@ class Base {
             return $open;
         }
     }
+    
+    public static function getListOfAgents() {
+        global $CFG, $DB;
+        
+        $role = $DB->get_record('role', array('shortname' => 'classroom_support_agent'));
+        $role_assignments = $DB->get_records('role_assignments', array('roleid' => $role->id));
+        $userSelect = array();
+        foreach ($role_assignments as $ra) {
+            $user = $DB->get_record('user',['id' => $ra->userid]);
+            $userSelect[$ra->userid] = fullname($user);
+        }
+        
+        return $userSelect;
+                
+    }
+    
+      public static function getRooms($buildingId) {
+        global $CFG, $DB;
+
+        $roomsSql = 'Select'
+                . '    {buildings_room}.id as id,'
+                . '    {buildings_room}.roomnumber as roomnumber,'
+                . '    {buildings_room}.name as name'
+                . ' From'
+                . '    {buildings_floor} '
+                . '    Inner Join {buildings_room} On {buildings_room}.floorid = {buildings_floor}.id'
+                . ' Where'
+                . '    {buildings_floor}.buildingid = ?';
+
+
+        $rooms = $DB->get_records_sql($roomsSql, [$buildingId]);
+
+        $roomArray = [];
+        $i = 0;
+        foreach ($rooms as $r) {
+            if (!$DB->get_record('local_roomsupport_rpi', ['roomid' => $r->id])) {
+                $roomArray[$i]['id'] = $r->id;
+                $roomArray[$i]['fullName'] = $r->name;
+                $roomArray[$i]['number'] = $r->roomnumber;
+                $i++;
+            }
+        }
+
+        return $roomArray;
+    }
 
 }

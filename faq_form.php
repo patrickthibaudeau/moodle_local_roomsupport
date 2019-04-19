@@ -47,6 +47,8 @@ class faq_form extends moodleform {
         $mform->addElement('header', 'general', get_string('general', 'local_buildings'));
         $mform->addElement("hidden", "id");
         $mform->setType("id", PARAM_INT);
+        $mform->addElement("hidden", "buildingid");
+        $mform->setType("buildingid", PARAM_INT);
         
         /** Name **/
         $mform->addElement('text', 'name', get_string('name', 'local_roomsupport'));

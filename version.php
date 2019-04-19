@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,11 +28,13 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
  * *************************************************************************
  * ************************************************************************ */
-
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019041602;
+$plugin->version = 2019041902;
 $plugin->component = 'local_roomsupport';
-$plugin->release = '1.0.0';
+$plugin->release = '0.0.1';
 $plugin->requires = 2018051700;
-$plugin->maturity = MATURITY_STABLE;
+$plugin->maturity = MATURITY_ALPHA;
+$plugin->dependencies = array(
+    'local_buildings' => 2017080900,
+);

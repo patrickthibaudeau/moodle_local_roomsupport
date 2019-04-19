@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/roomsupport/db" VERSION="20190405" COMMENT="XMLDB file for Moodle local/roomsupport"
+<XMLDB PATH="local/roomsupport/db" VERSION="20190419" COMMENT="XMLDB file for Moodle local/roomsupport"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
+    <TABLE NAME="local_roomsupport_buildings" COMMENT="Holds the building default settings">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="campusid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="ID from local_buildings_campus table"/>
+        <FIELD NAME="buildingid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="ID from the local_buildings_building table"/>
+        <FIELD NAME="pi_username" TYPE="char" LENGTH="255" NOTNULL="false" DEFAULT="pi" SEQUENCE="false" COMMENT="Username for raspberry pi's in the building"/>
+        <FIELD NAME="pi_password" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false" COMMENT="Password for Raspberry Pi user"/>
+        <FIELD NAME="ticketing_url" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false" COMMENT="URL for the ticketing system"/>
+        <FIELD NAME="ticketing_email" TYPE="char" LENGTH="1333" NOTNULL="false" DEFAULT="askit@yorku.ca" SEQUENCE="false" COMMENT="Email for ticketing system"/>
+        <FIELD NAME="service_hours" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="cell_numbers" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Agent cell phone numbers"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_roomsupport_agent" COMMENT="Agent assignment. To building or room">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="paramid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Building or device id"/>
+        <FIELD NAME="param_type" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false" COMMENT="Building = 1, Device= 2"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
     <TABLE NAME="local_roomsupport_rpi" COMMENT="This table holds all the information about connected Raspberry PIs">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="buildingid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="ID from local_sshd_buildings table"/>
+        <FIELD NAME="roomid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="ID from local_buildings_room"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="faqid" TYPE="int" LENGTH="5" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="building_longname" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false"/>
@@ -25,6 +57,7 @@
     <TABLE NAME="local_roomsupport_faq" COMMENT="This table will hold templates of help file that can be assigned to rooms.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="buildingid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="id from roomsupport_buildings table"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="USer that modifed the table"/>
         <FIELD NAME="name" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false" COMMENT="Name of template"/>
         <FIELD NAME="message_en" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The body holding the instructions"/>

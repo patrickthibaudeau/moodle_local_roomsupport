@@ -20,16 +20,21 @@ class RaspberryPis extends Devices {
      * @var \stdClass   
      */
     private $results;
+    private $buildingId;
 
     /**
      * 
      * @global \stdClass $CFG
      * @global \moodle_database $DB
      */
-    public function __construct() {
+    public function __construct($buildingId = 0) {
         global $CFG, $DB;
 
-        $this->results = $DB->get_records('local_roomsupport_rpi');
+        if ($buildingId) {
+            $this->results = $DB->get_records('local_roomsupport_rpi', ['buildingid' => $buildingId]);
+        } else {
+            $this->results = $DB->get_records('local_roomsupport_rpi', ['buildingid' => 0]);
+        }
     }
 
     /**
@@ -88,9 +93,9 @@ class RaspberryPis extends Devices {
             $html .= '            </td>';
             $html .= '            <td>';
             if ($PI->getIsAlive()) {
-            $html .= '<i class="fa fa-circle" style="color: green"></i>';
+                $html .= '<i class="fa fa-circle" style="color: green"></i>';
             } else {
-            $html .= '<i class="fa fa-circle" style="color: red"></i>';
+                $html .= '<i class="fa fa-circle" style="color: red"></i>';
             }
             $html .= '            </td>';
             $html .= '            <td>';

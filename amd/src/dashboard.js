@@ -7,10 +7,24 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
      * @returns {undefined}
      */
     function initDashboard() {
+        load();
         initEditModal();
         initDeleteModal();
         rebootPi();
         reloadContents();
+    }
+
+    function load() {
+        $('#changeCampusSelectContainer').hide();
+        $('#changeCampus').click(function () {
+            $(this).hide();
+            $('#changeCampusSelectContainer').show();
+        });
+
+        $('#campusId').change(function () {
+            var campusId = $(this).val();
+            window.location = 'index.php?campusid=' + campusId;
+        });
     }
 
     /**
@@ -28,11 +42,16 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                 dataType: 'json',
                 success: function (results) {
                     console.log(results);
+                    var faqs = results.faqs;
                     $('#piId').val(id);
-                    $('#buildingLongName').val(results.building_longname);
-                    $('#buildingShortName').val(results.building_shortname);
-                    $('#roomNumber').val(results.room_number);
+                    $('#buildingId').val(results.buildingid);
+                    $('#roomId').val(results.roomid);
+                    $('#faqId').empty();
+                        for(var i=0; i < Object.keys(faqs).length; i++) {
+                            $("<option value='" + faqs[i].id + "'>" + faqs[i].name + "</option>").appendTo("#faqId");
+                        }
                     $('#faqId').val(results.faqid);
+                    
                 },
                 error: function (e) {
                     console.log(e);
@@ -44,6 +63,40 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                 focus: true
             });
 
+            $('#buildingId').change(function () {
+                var buildingId = $(this).val();
+                //Get rooms
+                $.ajax({
+                    url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=getRooms&buildingid=' + buildingId,
+                    dataType: 'json',
+                    success: function (results) {
+                        console.log(results[1]['number']);
+                        $('#roomId').empty();
+                        for(var i=0; i < Object.keys(results).length; i++) {
+                            $("<option value='" + results[i].id + "'>" + results[i].number + "</option>").appendTo("#roomId");
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+                //Get FAQs
+                $.ajax({
+                    url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=getFaqs&buildingid=' + buildingId,
+                    dataType: 'json',
+                    success: function (results) {
+                        console.log(results[0]['name']);
+                        $('#faqId').empty();
+                        for(var i=0; i < Object.keys(results).length; i++) {
+                            $("<option value='" + results[i].id + "'>" + results[i].name + "</option>").appendTo("#faqId");
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+
             $('#savePiBtn').click(function () {
                 var formData = $('#editPiForm').serialize();
                 console.log(formData);
@@ -52,10 +105,7 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                     data: formData,
                     dataType: 'html',
                     success: function (results) {
-                        console.log(results);
-                        $('#raspberryPiContainer').html(results);
-                        $("#editModal").modal('hide');
-                        initDashboard();
+                        location.reload();
                     },
                     error: function (e) {
                         console.log(e);

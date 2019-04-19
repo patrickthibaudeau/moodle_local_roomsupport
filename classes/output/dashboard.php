@@ -16,8 +16,10 @@ namespace local_roomsupport\output;
  */
 class dashboard implements \renderable, \templatable {
 
-    public function __construct() {
-        
+    private $campusId;
+
+    public function __construct($campusId) {
+        $this->campusId = $campusId;
     }
 
     /**
@@ -28,13 +30,20 @@ class dashboard implements \renderable, \templatable {
      * @return array
      */
     public function export_for_template(\renderer_base $output) {
-        global $CFG, $USER, $DB;      
-           
+        global $CFG, $USER, $DB;
+
+        $campus = $DB->get_record('buildings_campus', ['id' => $this->campusId]);
+
         $data = [
             'wwwroot' => $CFG->wwwroot,
-            'devices' => $this->getRaspberryPis(),
-            'faqs' => $this->getFaqs()
+            'unassignedDevices' => $this->getUnassignedRaspberryPis(),
+            'buildings' => $this->getBuildings(),
+            'campusId' => $this->campusId,
+            'campuses' => $this->getCampuses(),
+            'campusName' => $campus->name
         ];
+
+        print_object($data);
         return $data;
     }
 
@@ -42,12 +51,12 @@ class dashboard implements \renderable, \templatable {
      * Returns all Raspberry Pi's in the system
      * @global \moodle_database $DB
      */
-    private function getRaspberryPis() {
+    private function getRaspberryPis($buildingId) {
         global $DB;
-        
-        $RPIS = new  \local_roomsupport\RaspberryPis();
+
+        $RPIS = new \local_roomsupport\RaspberryPis($buildingId);
         $rpis = $RPIS->getResults();
-        
+
         $rpiArray = [];
         $i = 0;
         foreach ($rpis as $pi) {
@@ -60,20 +69,48 @@ class dashboard implements \renderable, \templatable {
             $i++;
             unset($PI);
         }
-        
+
         return $rpiArray;
     }
-    
+
     /**
      * Returns all Raspberry Pi's in the system
      * @global \moodle_database $DB
      */
-    private function getFaqs() {
+    private function getUnassignedRaspberryPis() {
         global $DB;
-        
-        $FAQS = new  \local_roomsupport\Faqs();
+
+        $RPIS = new \local_roomsupport\RaspberryPis();
+        $rpis = $RPIS->getResults();
+
+        $rpiArray = [];
+        $i = 0;
+        foreach ($rpis as $pi) {
+            if ($pi->buildingid == false) {
+                $PI = new \local_roomsupport\RaspberryPi($pi->id);
+                $rpiArray[$i]['id'] = $PI->getId();
+                $rpiArray[$i]['mac'] = $PI->getMac();
+                $rpiArray[$i]['ip'] = $PI->getIp();
+                $rpiArray[$i]['room'] = $PI->getBuildingShortName() . ' ' . $PI->getRoomNumber();
+                $rpiArray[$i]['status'] = $PI->getIsAlive();
+                $i++;
+                unset($PI);
+            }
+        }
+
+        return $rpiArray;
+    }
+
+    /**
+     * Returns all Raspberry Pi's in the system
+     * @global \moodle_database $DB
+     */
+    private function getFaqs($buildingId) {
+        global $DB;
+
+        $FAQS = new \local_roomsupport\Faqs($buildingId);
         $faqs = $FAQS->getResults();
-        
+
         $faqArray = [];
         $i = 0;
         foreach ($faqs as $faq) {
@@ -83,7 +120,70 @@ class dashboard implements \renderable, \templatable {
             $i++;
             unset($FAQ);
         }
-        
+
         return $faqArray;
     }
+
+    /**
+     * Returns all buildings for the campus
+     * @global \moodle_database $DB
+     */
+    private function getBuildings() {
+        global $CFG, $DB;
+
+        $BUILDINGS = new \local_roomsupport\Buildings($this->campusId);
+        $buildings = $BUILDINGS->getResults();
+
+        $buildingArray = [];
+        $i = 0;
+        foreach ($buildings as $b) {
+            $BUILDING = new \local_roomsupport\Building($b->id);
+            $buildingArray[$i]['id'] = $b->id;
+            $buildingArray[$i]['buildingId'] = $BUILDING->getBuildingId();
+            $buildingArray[$i]['fullName'] = $BUILDING->getBuildingFullName();
+            $buildingArray[$i]['shortName'] = $BUILDING->getBuildingShortName();
+            $buildingArray[$i]['devices'] = $this->getRaspberryPis($BUILDING->getId());
+            $buildingArray[$i]['faqs'] = $this->getFaqs($BUILDING->getId());
+            $buildingArray[$i]['rooms'] = $this->getRooms($BUILDING->getBuildingId());
+            $i++;
+        }
+
+        return $buildingArray;
+    }
+
+    /**
+     * Returns rooms in a building
+     * @global \moodle_database $DB
+     */
+    private function getRooms($buildingId) {
+        global $CFG, $DB;
+
+        return \local_roomsupport\Base::getRooms($buildingId);
+    }
+
+    /**
+     * Returns all Raspberry Pi's in the system
+     * @global \moodle_database $DB
+     */
+    private function getCampuses() {
+        global $CFG, $DB;
+
+        $CAMPUSES = new \local_buildings\Campuses();
+        $campuses = $CAMPUSES->getCampuses();
+
+        $campusArray = [];
+        $i = 0;
+        foreach ($campuses as $c) {
+            $campusArray[$i]['id'] = $c['id'];
+            $campusArray[$i]['name'] = $c['name'];
+            if ($c['id'] == $this->campusId) {
+                $campusArray[$i]['selected'] = true;
+            }
+
+            $i++;
+        }
+
+        return $campusArray;
+    }
+
 }

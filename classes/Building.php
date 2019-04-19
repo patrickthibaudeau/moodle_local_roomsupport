@@ -13,7 +13,7 @@ namespace local_roomsupport;
  *
  * @author patrick
  */
-class RaspberryPi extends Device {
+class Building extends Device {
 
     /**
      *
@@ -25,43 +25,19 @@ class RaspberryPi extends Device {
      *
      * @var int 
      */
-    private $userId;
+    private $campusId;
 
     /**
-     *
+     * Id from local_buildings_building table
      * @var int 
      */
     private $buildingId;
 
     /**
      *
-     * @var int 
-     */
-    private $roomId;
-
-    /**
-     *
      * @var string 
      */
-    private $mac;
-
-    /**
-     *
-     * @var string 
-     */
-    private $ip;
-    
-    /**
-     *
-     * @var string 
-     */
-    private $faqId;
-
-    /**
-     *
-     * @var string 
-     */
-    private $buildingName;
+    private $buildingFullName;
 
     /**
      *
@@ -73,19 +49,37 @@ class RaspberryPi extends Device {
      *
      * @var string 
      */
-    private $roomNumber;
+    private $piUsername;
 
     /**
      *
-     * @var int 
-     */
-    private $lastPing;
-
-    /**
-     * Human readable
      * @var string 
      */
-    private $lastPingHr;
+    private $piPassword;
+
+    /**
+     *
+     * @var string 
+     */
+    private $ticketingUrl;
+
+    /**
+     *
+     * @var string 
+     */
+    private $ticketingEmail;
+
+    /**
+     *
+     * @var string 
+     */
+    private $serviceHours;
+
+    /**
+     *
+     * @var string 
+     */
+    private $cellNumbers;
 
     /**
      *
@@ -110,18 +104,12 @@ class RaspberryPi extends Device {
      * @var string 
      */
     private $timeModifiedHr;
-    
+
     /**
      *
      * @var string 
      */
     private $dbTable;
-    
-    /**
-     *
-     * @var bool 
-     */
-    private $isAlive;
 
     /**
      * 
@@ -132,8 +120,10 @@ class RaspberryPi extends Device {
      */
     public function __construct($id = 0) {
         global $CFG, $DB, $USER;
-        
-        $this->dbTable = 'local_roomsupport_rpi';
+        include_once($CFG->dirroot . '/lib/filelib.php');
+
+        $this->dbTable = 'local_roomsupport_buildings';
+        $context = \context_system::instance();
 
         if ($id) {
             $results = $DB->get_record($this->dbTable, ['id' => $id]);
@@ -142,29 +132,20 @@ class RaspberryPi extends Device {
         }
 
         $this->id = $id;
-        $this->mac = $results->mac ?? '';
-        $this->ip = $results->ip ?? '';
-        $this->faqId = $results->faqid ?? 0;
-        $this->buildingId = $results->buildingid;
-        $this->roomId = $results->roomid;
-        $this->buildingName = $results->building_longname ?? 0;        
-        $this->buildingShortName = $results->building_shortname ?? 0;        
-        $this->roomNumber = $results->room_number ?? '';
-        $this->lastPing = $results->lastping ?? 0;
-        if (isset($results->lastping)) {
-            $this->lastPingHr = date('F d, Y', $results->lastping);
-            
-            //Calculate if device is alive
-            $difference = time() - $results->lastping;
-            if ($difference <= 300) {
-                $this->isAlive = true;
-            } else {
-                $this->isAlive = false;
-            }
-         } else {
-            $this->lastPingHr = '';
-            $this->isAlive = false;
+        $this->buildingId = $results->buildingid ?? 0;
+        //Get building name
+        if ($results->buildingid) {
+            $BUILDING = new \local_buildings\Building($results->buildingid);
+            $this->buildingFullName = $BUILDING->getName();
+            $this->buildingShortName = $BUILDING->getShortname();
         }
+
+        $this->piUsername = $results->pi_username ?? '';
+        $this->piPassword = $results->pi_password ?? '';
+        $this->ticketingUrl = $results->ticketing_url ?? '';
+        $this->ticketingEmail = $results->ticketing_email ?? '';
+        $this->serviceHours = $results->service_hours ?? '';
+        $this->cellNumbers = $results->cell_numbers ?? '';
 
         $this->timeCreated = $results->timecreated ?? 0;
         if (isset($results->timecreated)) {
@@ -187,11 +168,17 @@ class RaspberryPi extends Device {
      */
     public function insert($data) {
         global $DB;
-        
-        $data['timecreated'] = time();
-        $data['timemodified'] = time();
-        
-        $DB->insert_record($this->dbTable, $data);
+
+        if (is_object($data)) {
+            $data->timecreated = time();
+            $data->timemodified = time();
+        } else {
+            $data['timecreated'] = time();
+            $data['timemodified'] = time();
+        }
+
+        $id = $DB->insert_record($this->dbTable, $data);
+        return $id;
     }
 
     /**
@@ -200,9 +187,13 @@ class RaspberryPi extends Device {
      */
     public function update($data) {
         global $DB;
-  
-        $data['timemodified'] = time();
-        
+
+        if (is_object($data)) {
+            $data->timemodified = time();
+        } else {
+            $data['timemodified'] = time();
+        }
+
         $DB->update_record($this->dbTable, $data);
     }
 
@@ -212,77 +203,72 @@ class RaspberryPi extends Device {
      */
     public function delete() {
         global $DB;
-        
-        $DB->delete_records($this->dbTable,['id' => $this->id] );
+
+        $DB->delete_records($this->dbTable, ['id' => $this->id]);
     }
 
-    public function getId() {
+    function getId() {
         return $this->id;
     }
 
-    public function getUserId() {
-        return $this->userId;
-    }
-
-    public function getMac() {
-        return $this->mac;
-    }
-
-    public function getIp() {
-        return $this->ip;
-    }
-    
-    public function getFaqId() {
-        return $this->faqId;
-    }
-
-    public function getBuildingName() {
-        return $this->buildingName;
-    }
-
-    public function getBuildingShortName() {
-        return $this->buildingShortName;
-    }
-
-    public function getRoomNumber() {
-        return $this->roomNumber;
-    }
-
-    public function getLastPing() {
-        return $this->lastPing;
-    }
-
-    public function getLastPingHr() {
-        return $this->lastPingHr;
-    }
-
-    public function getTimeCreated() {
-        return $this->timeCreated;
-    }
-
-    public function getTimeCreatedHr() {
-        return $this->timeCreatedHr;
-    }
-
-    public function getTimeModified() {
-        return $this->timeModified;
-    }
-
-    public function getTimeModifiedHr() {
-        return $this->timeModifiedHr;
-    }
-
-    public function getIsAlive() {
-        return $this->isAlive;
+    function getCampusId() {
+        return $this->campusId;
     }
 
     function getBuildingId() {
         return $this->buildingId;
     }
 
-    function getRoomId() {
-        return $this->roomId;
+    function getBuildingFullName() {
+        return $this->buildingFullName;
     }
 
+    function getBuildingShortName() {
+        return $this->buildingShortName;
+    }
+
+    function getPiUsername() {
+        return $this->piUsername;
+    }
+
+    function getPiPassword() {
+        return $this->piPassword;
+    }
+
+    function getTicketingUrl() {
+        return $this->ticketingUrl;
+    }
+
+    function getTicketingEmail() {
+        return $this->ticketingEmail;
+    }
+
+    function getServiceHours() {
+        return $this->serviceHours;
+    }
+
+    function getCellNumbers() {
+        return $this->cellNumbers;
+    }
+
+    function getTimeCreated() {
+        return $this->timeCreated;
+    }
+
+    function getTimeCreatedHr() {
+        return $this->timeCreatedHr;
+    }
+
+    function getTimeModified() {
+        return $this->timeModified;
+    }
+
+    function getTimeModifiedHr() {
+        return $this->timeModifiedHr;
+    }
+
+    function getDbTable() {
+        return $this->dbTable;
+    }
 
 }

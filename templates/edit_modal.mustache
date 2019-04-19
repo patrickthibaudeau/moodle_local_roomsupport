@@ -14,16 +14,17 @@
                             <form id="editPiForm">
                                 <input type="hidden" name="id" id="piId" value="">
                                 <div class="form-group">
-                                    <label for="buildingLongName">{{#str}}building_name, local_roomsupport{{/str}}</label>
-                                    <input type="text" class="form-control" id="buildingLongName" name="building_name" value="">
+                                    <label for="buildingId">{{#str}}assign_to_building, local_roomsupport{{/str}}</label>
+                                    <select id="buildingId" name="buildingid" class="form-control">
+                                        {{#buildings}}
+                                        <option value="{{{id}}}">{{{fullName}}}</option>
+                                        {{/buildings}}
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="buildingShortName">{{#str}}building_abbreviation, local_roomsupport{{/str}}</label>
-                                    <input type="text" class="form-control" id="buildingShortName" name="building_shortname" value="">
-                                </div>
-                                <div class="form-group">
-                                    <label for="roomNumber">{{#str}}room_number, local_roomsupport{{/str}}</label>
-                                    <input type="text" class="form-control" id="roomNumber" name="room_number" value="">
+                                    <label for="roomId">{{#str}}assign_to_room, local_roomsupport{{/str}}</label>
+                                    <select id="roomId" name="roomid" class="form-control">
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="faqId">{{#str}}associated_faq, local_roomsupport{{/str}}</label>

@@ -29,6 +29,7 @@ function display_page() {
     global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 
     $id = optional_param('id', 0, PARAM_INT); //List id
+    $campusId = optional_param('campusid', $CFG->roomsupport_default_campus, PARAM_INT);
 
     require_login(1, false); //Use course 1 because this has nothing to do with an actual course, just like course 1
 
@@ -50,9 +51,8 @@ function display_page() {
     //*** DISPLAY CONTENT **
     //**********************
     $output = $PAGE->get_renderer('local_roomsupport');
-    $dashboard = new \local_roomsupport\output\dashboard();
+    $dashboard = new \local_roomsupport\output\dashboard($campusId);
 
-//    $PAGE->requires->js_call_amd('local_roomsupport/menu', 'init');
     echo '<div id="deviceContainer">';
     echo $output->render_dashboard($dashboard);
     echo '</div>';

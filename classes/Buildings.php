@@ -13,22 +13,28 @@ namespace local_roomsupport;
  *
  * @author patrick
  */
-class Faqs extends Devices {
+class Buildings extends Devices {
 
     /**
      * Returns all records in table
      * @var \stdClass   
      */
     private $results;
+    
+    /**
+     *
+     * @var int 
+     */
+    private $campusId;
 
     /**
      * 
      * @global \stdClass $CFG
      * @global \moodle_database $DB
      */
-    public function __construct($buildingId) {
+    public function __construct($campusId) {
         global $CFG, $DB;
-        $this->results = $DB->get_records('local_roomsupport_faq', [ 'buildingid' => $buildingId]);
+        $this->results = $DB->get_records('local_roomsupport_buildings', ['campusid' => $campusId]);
     }
 
     /**

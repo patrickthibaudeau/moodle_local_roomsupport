@@ -30,27 +30,41 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
 $string['actions'] = 'Actions';
+$string['add_building'] = 'Add building';
+$string['adding_building_to'] = 'Adding a building to campus: ';
 $string['agent'] = 'Agent';
+$string['agents'] = 'Agents';
+$string['agents_help'] = 'Select agents that will be service rooms in this building';
 $string['agent_has_been_called'] = 'A notification has been sent to the call center. Waiting for an agent to reply.';
 $string['agent_on_the_way'] = 'will be serving you within 5 minutes.';
 $string['agent_panel'] = 'Agent panel';
 $string['agent_phone_numbers'] = 'Agent cell phone numbers';
 $string['agent_phone_numbers_help'] = 'Enter you agents cell phone numers. Seperate each numer with a comma.';
+$string['assign_to_building'] = 'Assign to building';
+$string['assign_to_room'] = 'Assign to room';
 $string['associated_faq'] = 'Associated FAQ';
 $string['average_time_to_reply'] = 'Average time to reply';
+$string['building'] = 'Building';
+$string['building_help'] = 'Select a building form the list of buildings.';
+$string['buildings'] = 'Buildings';
 $string['building_abbreviation'] = 'Build short name';
 $string['building_name'] = 'Building name';
 $string['calls_per_room'] = 'Calls per room';
 $string['cannotaccesssystem'] = 'You don have permission to access this system.';
+$string['change'] = 'Change';
+$string['change_campus'] = 'Change campus';
 $string['close'] = 'Close';
 $string['dashboard'] = 'Dashboard';
+$string['default_campus'] = 'Default campus';
+$string['default_campus_help'] = 'Select a default campus to be used when logging into the system.';
+$string['default_settings'] = 'Default settings';
 $string['delete'] = 'Delete';
 $string['delete_confirmation'] = 'Are you sure you want to delete this device? If it is still on the network and communicationg with this server, it will be recreated.';
 $string['delete_faq_confirmation'] = 'Are you sure you want to delete this faq entry? This cannot be undone.';
 $string['details'] = 'Details';
 $string['edit'] = 'Edit';
+$string['editing_building'] = 'Editing building: ';
 $string['end_time'] = 'End time';
 $string['end_time_help'] = 'WRITE ACTUAL INSTRUCTIONS';
 $string['faqs'] = 'FAQs';
@@ -69,6 +83,7 @@ $string['message_fr'] = 'Message (Français)';
 $string['name'] = 'Name';
 $string['new_template'] = 'New template';
 $string['no_agent_assigned'] = 'No agent assign';
+$string['no_permission'] = 'You do not have the permission to view this page.';
 $string['no_site_url_defined'] = 'No site url defined';
 $string['number_of_calls_answered'] = 'Number of calls answered by agent';
 $string['on_my_way'] = 'On my way';
@@ -91,14 +106,12 @@ $string['room_not_set'] = 'Room not set';
 $string['save'] = 'Save';
 $string['search'] = 'Search';
 $string['service_hours'] = 'Service hours';
-$string['site_url'] = 'Agent site url';
-$string['site_url_help'] = 'AThis site is used on the agent page. Usually, this would be a ticketing system.';
 $string['statistics'] = 'Statistics';
 $string['status'] = 'Status';
 $string['roomsupport:admin'] = 'Room Support System Administrator';
 $string['roomsupport:agent'] = 'Room Support System Agent';
 $string['roomsupport:rpi'] = 'Raspberry PI access';
-$string['service_hours'] = 'Start time';
+$string['service_hours'] = 'Service hours';
 $string['service_hours_help'] = 'You can add the hours your service is available here. When your services are not available, the "help button'
         . ' On the Raspberry Pi will not be available either. To write your hours, you must follow the naming convention:<br>'
         . 'Days are identified as letters: U=Sunday, M=Monday, T=Tuesday,W=Wednesday,R=Thursday,F=Friday,S=Saturday<br><br>'
@@ -124,6 +137,8 @@ $string['sms_apikey_help'] = 'Enter the API Key for Swith SMS Gateway (https://s
 $string['ticket_system_email'] = 'Ticketing system email';
 $string['ticket_system_email_help'] = 'Enter the email used by your ticketing system to recieve/open tickets.';
 $string['ticketing_system'] = 'Ticketing system';
+$string['ticketing_system_url'] = 'Agent site url';
+$string['ticketing_system_url_help'] = 'AThis site is used on the agent page. Usually, this would be a ticketing system.';
 $string['timeclosed'] = 'Time closed';
 $string['timecreated'] = 'Time created';
 $string['timereplied'] = 'Time replied';
@@ -131,6 +146,8 @@ $string['token'] = 'Token';
 $string['token_help'] = 'Enter the token for the web service created in this instance of Moodle';
 $string['total_calls'] = 'Total calls made';
 $string['unanswered'] = 'Unanswered';
+$string['unassigned_devices'] = 'Unassigned devices';
 $string['username'] = 'Username';
 $string['username_help'] = 'Raspberry Pi username. Please use the same name/password combination for all your Raspberry Pi\'s';
+$string['view_campus'] = 'View campus';
 

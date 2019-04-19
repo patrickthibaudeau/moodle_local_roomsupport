@@ -15,9 +15,11 @@ namespace local_roomsupport\output;
  * @return array
  */
 class faqs implements \renderable, \templatable {
+    
+    private $buildingId;
 
-    public function __construct() {
-        
+    public function __construct($buildingId) {
+        $this->buildingId = $buildingId;
     }
 
     /**
@@ -32,7 +34,8 @@ class faqs implements \renderable, \templatable {
            
         $data = [
             'wwwroot' => $CFG->wwwroot,
-            'faqs' => $this->getFaqs()
+            'buildingId' => $this->buildingId,
+            'faqs' => $this->getFaqs($this->buildingId)
         ];
         
        
@@ -43,10 +46,10 @@ class faqs implements \renderable, \templatable {
      * Returns all FAQs
      * @global \moodle_database $DB
      */
-    private function getFaqs() {
+    private function getFaqs($buildingId) {
         global $DB;
         
-        $FAQS = new  \local_roomsupport\Faqs();
+        $FAQS = new  \local_roomsupport\Faqs($buildingId);
         $faqs = $FAQS->getResults();
         
         //If lang is french, then lang=true otherwise false

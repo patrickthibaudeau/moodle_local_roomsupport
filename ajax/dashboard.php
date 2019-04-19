@@ -25,35 +25,42 @@ switch ($action) {
     case 'getInfo':
         $id = required_param('id', PARAM_INT);
         $PI = new \local_roomsupport\RaspberryPi($id);
+        $FAQS = new \local_roomsupport\Faqs($PI->getBuildingId());
+        $faqs = $FAQS->getResults();
+        $faqArray = [];
+        $i = 0;
+        foreach ($faqs as $f) {
+            $faqArray[$i]['id'] = $f->id;
+            $faqArray[$i]['name'] = $f->name;
+            $i++;
+        }
         $data = [];
-        $data['building_longname'] = $PI->getBuildingName();
-        $data['building_shortname'] = $PI->getBuildingShortName();
-        $data['room_number'] = $PI->getRoomNumber();
+        $data['buildingid'] = $PI->getBuildingId();
+        $data['roomid'] = $PI->getRoomId();
         $data['faqid'] = $PI->getFaqId();
+        $data['rooms'] = \local_roomsupport\Base::getRooms($PI->getBuildingId());
+        $data['faqs'] = $faqArray;
 
         echo json_encode($data);
         break;
 
     case 'save':
         $id = required_param('id', PARAM_INT);
-        $buildingLongName = optional_param('building_longname', '', PARAM_TEXT);
-        $buildingShortName = optional_param('building_shortname', '', PARAM_TEXT);
-        $roomNumber = optional_param('room_number', '', PARAM_TEXT);
+        $buildingId = optional_param('buildingid', '', PARAM_TEXT);
+        $roomId = optional_param('roomid', '', PARAM_TEXT);
         $faqId = required_param('faqid', PARAM_INT);
 
         $data = [];
         $data['id'] = $id;
         $data['userid'] = $USER->id;
-        $data['building_longname'] = $buildingLongName;
-        $data['building_shortname'] = $buildingShortName;
-        $data['room_number'] = $roomNumber;
+        $data['buildingid'] = $buildingId;
+        $data['roomid'] = $roomId;
         $data['faqid'] = $faqId;
 
         $PI = new \local_roomsupport\RaspberryPi($id);
         $PI->update($data);
 
         $PIS = new \local_roomsupport\RaspberryPis();
-        echo $PIS->getHtml();
         break;
     case 'delete' :
         $id = required_param('id', PARAM_INT);
@@ -72,6 +79,24 @@ switch ($action) {
         $output = $PAGE->get_renderer('local_roomsupport');
         $dashboard = new \local_roomsupport\output\dashboard();
         echo $output->render_dashboard($dashboard);
+        break;
+    case 'getRooms':
+        $buildingId = optional_param('buildingid', 0, PARAM_INT);
+        $BUILDING = new \local_roomsupport\Building($buildingId);
+        echo json_encode(\local_roomsupport\Base::getRooms($BUILDING->getBuildingId()));
+        break;
+    case 'getFaqs':
+        $buildingId = optional_param('buildingid', 0, PARAM_INT);
+        $FAQS = new \local_roomsupport\Faqs($buildingId);
+        $faqs = $FAQS->getResults();
+        $faqArray = [];
+        $i = 0;
+        foreach ($faqs as $f) {
+            $faqArray[$i]['id'] = $f->id;
+            $faqArray[$i]['name'] = $f->name;
+            $i++;
+        }
+        echo json_encode($faqArray);
         break;
 }
 

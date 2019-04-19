@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="container-fluid">
+        <div class="text-center">
+            <h2>{{{campusName}}} <span style="font-size: 10px;"><a href="javascript:void(0);" id="changeCampus" 
+                                          title="{{#str}}change_campus, local_roomsupport{{/str}}"
+                                          class="btn btn-link-primary">{{#str}}change, local_roomsupport{{/str}}
+                    </a></span></h2>
+        </div>
+        <div id="changeCampusSelectContainer"class="form-group">
+            <label for="campusId">{{#str}}view_campus, local_roomsupport{{/str}}</label>
+            <select class="form-control" id="campusId">
+                {{#campuses}}
+                <option value="{{{id}}}" {{#selected}}selected{{/selected}}>{{{name}}}</option>
+                {{/campuses}}
+            </select>
+        </div>
+        <div class="float-right">
+            <a href="agent/index.php" class="btn btn-outline-primary" title="{{#str}}agent_panel, local_roomsupport{{/str}}">{{#str}}agent_panel, local_roomsupport{{/str}}</a>
+            <a href="reports/logs.php" class="btn btn-outline-primary" title="{{#str}}logs, local_roomsupport{{/str}}">{{#str}}logs, local_roomsupport{{/str}}</a>
+            <a href="reports/statistics.php" class="btn btn-outline-primary" title="{{#str}}statistics, local_roomsupport{{/str}}">{{#str}}statistics, local_roomsupport{{/str}}</a>
+            <a href="faqs.php" class="btn btn-outline-primary" title="{{#str}}faqs, local_roomsupport{{/str}}">{{#str}}faqs, local_roomsupport{{/str}}</a>
+        </div>
+    </div>
+</div>
+<div class="card-body">   
+    <div class="card-deck">
+        {{#devices}}
+        <div class="card {{#status}}online{{/status}}{{^status}}offline{{/status}} mb-2">
+            <div class="card-header ">
+                {{{room}}}
+            </div>
+            <div class="card-body">
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#detailsModal{{{id}}}">
+                    <i class="fa fa-info-circle" ></i>
+                </button>
+
+                <a href="javascript:void(0);" class="editRpi btn btn-outline-primary" data-id="{{{id}}}" title="{{#str}}edit, local_roomsupport{{/str}}">
+                    <i class="fa fa-edit" ></i>
+                </a>
+
+                <a href="javascript:void(0);"  class="rebootRpi btn btn-outline-success" data-id="{{{id}}}" title="{{#str}}reboot, local_roomsupport{{/str}}">
+                    <i class="fa fa-power-off" ></i>
+                </a>
+
+                <a href="javascript:void(0);"  class="deleteRpi btn btn-outline-danger" data-id="{{{id}}}" title="{{#str}}delete, local_roomsupport{{/str}}">
+                    <i class="fa fa-trash"></i>
+                </a>
+
+                {{> local_roomsupport/details_modal }}
+            </div>
+        </div>
+        {{/devices}}
+    </div>
+</div>
+
+{{> local_roomsupport/delete_modal }}
+{{> local_roomsupport/edit_modal }}
+{{#js}}
+require(['local_roomsupport/dashboard'], function(mod) {
+mod.init();
+});
+{{/js}}

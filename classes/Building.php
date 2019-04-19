@@ -110,6 +110,7 @@ class Building extends Device {
      * @var string 
      */
     private $dbTable;
+    private $agentPhones;
 
     /**
      * 
@@ -129,6 +130,7 @@ class Building extends Device {
             $results = $DB->get_record($this->dbTable, ['id' => $id]);
         } else {
             $results = new \stdClass();
+            $results->buildingid = 0;
         }
 
         $this->id = $id;
@@ -160,6 +162,24 @@ class Building extends Device {
         } else {
             $this->timeModifiedHr = '';
         }
+
+        //Get agent Phones
+        $agents = $DB->get_records('local_roomsupport_agents', ['paramid' => $id, 'param_type' => PARAM_TYPE_BUILDING]);
+
+        $agentsArray = [];
+        $i = 0;
+        foreach ($agents as $a) {
+            $user = $DB->get_record('user', ['id' => $a->userid]);
+            if ($user->phone) {
+                $agentsArray[$i] = $user->phone;
+                $i++;
+            }
+            if ($user->phone2) {
+                $agentsArray[$i] = $user->phone2;
+                $i++;
+            }
+        }
+        $this->agentPhones = $agentsArray;
     }
 
     /**
@@ -269,6 +289,10 @@ class Building extends Device {
 
     function getDbTable() {
         return $this->dbTable;
+    }
+    
+    function getAgentPhones() {
+        return $this->agentPhones;
     }
 
 }

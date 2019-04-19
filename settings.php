@@ -56,8 +56,8 @@ if ($hassiteconfig) {
 
 //Agent iframe site
     $name = 'roomsupport_agent_site';
-    $text = get_string('site_url', 'local_roomsupport');
-    $help = get_string('site_url_help', 'local_roomsupport');
+    $text = get_string('ticketing_system_url', 'local_roomsupport');
+    $help = get_string('ticketing_system_url_help', 'local_roomsupport');
     $params = '';
     $settings->add(new admin_setting_configtext($name, $text, $help, '', PARAM_TEXT));
 

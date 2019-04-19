@@ -43,7 +43,7 @@ class dashboard implements \renderable, \templatable {
             'campusName' => $campus->name
         ];
 
-        print_object($data);
+//        print_object($data);
         return $data;
     }
 
@@ -64,7 +64,7 @@ class dashboard implements \renderable, \templatable {
             $rpiArray[$i]['id'] = $PI->getId();
             $rpiArray[$i]['mac'] = $PI->getMac();
             $rpiArray[$i]['ip'] = $PI->getIp();
-            $rpiArray[$i]['room'] = $PI->getBuildingShortName() . ' ' . $PI->getRoomNumber();
+            $rpiArray[$i]['room'] = $PI->getRoomNumber();
             $rpiArray[$i]['status'] = $PI->getIsAlive();
             $i++;
             unset($PI);
@@ -91,7 +91,7 @@ class dashboard implements \renderable, \templatable {
                 $rpiArray[$i]['id'] = $PI->getId();
                 $rpiArray[$i]['mac'] = $PI->getMac();
                 $rpiArray[$i]['ip'] = $PI->getIp();
-                $rpiArray[$i]['room'] = $PI->getBuildingShortName() . ' ' . $PI->getRoomNumber();
+                $rpiArray[$i]['room'] = $PI->getRoomNumber();
                 $rpiArray[$i]['status'] = $PI->getIsAlive();
                 $i++;
                 unset($PI);

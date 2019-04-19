@@ -145,11 +145,14 @@ class RaspberryPi extends Device {
         $this->mac = $results->mac ?? '';
         $this->ip = $results->ip ?? '';
         $this->faqId = $results->faqid ?? 0;
-        $this->buildingId = $results->buildingid;
-        $this->roomId = $results->roomid;
+        $this->buildingId = $results->buildingid ?? 0;
+        $this->roomId = $results->roomid ?? 0;
+        if ($results->roomid) {
+            $ROOM = new \local_buildings\Room($results->roomid);
+            $this->roomNumber = $ROOM->getBuildingShortName() . ' '. $ROOM->getRoomNumber();
+        }
         $this->buildingName = $results->building_longname ?? 0;        
-        $this->buildingShortName = $results->building_shortname ?? 0;        
-        $this->roomNumber = $results->room_number ?? '';
+        $this->buildingShortName = $results->building_shortname ?? 0; 
         $this->lastPing = $results->lastping ?? 0;
         if (isset($results->lastping)) {
             $this->lastPingHr = date('F d, Y', $results->lastping);

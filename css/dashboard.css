@@ -29,6 +29,10 @@ and open the template in the editor.
     flex-basis: calc(20% - 30px);
 }
 
+.select2.select2-container.select2-container--default {
+    width: 100% !important;
+}
+
 @media (max-width: 999px) {
     .col-xs-1 {
         display: none;

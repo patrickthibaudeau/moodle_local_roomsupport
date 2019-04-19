@@ -43,15 +43,22 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                 success: function (results) {
                     console.log(results);
                     var faqs = results.faqs;
+                    var rooms = results.rooms
                     $('#piId').val(id);
                     $('#buildingId').val(results.buildingid);
+                    $('#roomId').empty();
+                    for (var i = 0; i < Object.keys(rooms).length; i++) {
+                        $("<option value='" + rooms[i].id + "'>" + rooms[i].number + "</option>").appendTo("#roomId");
+                    }
                     $('#roomId').val(results.roomid);
                     $('#faqId').empty();
-                        for(var i=0; i < Object.keys(faqs).length; i++) {
-                            $("<option value='" + faqs[i].id + "'>" + faqs[i].name + "</option>").appendTo("#faqId");
-                        }
+                    for (var i = 0; i < Object.keys(faqs).length; i++) {
+                        $("<option value='" + faqs[i].id + "'>" + faqs[i].name + "</option>").appendTo("#faqId");
+                    }
                     $('#faqId').val(results.faqid);
-                    
+                    $('#buildingId').select2();
+                    $('#roomId').select2();
+                    $('#faqId').select2();
                 },
                 error: function (e) {
                     console.log(e);
@@ -72,9 +79,10 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                     success: function (results) {
                         console.log(results[1]['number']);
                         $('#roomId').empty();
-                        for(var i=0; i < Object.keys(results).length; i++) {
+                        for (var i = 0; i < Object.keys(results).length; i++) {
                             $("<option value='" + results[i].id + "'>" + results[i].number + "</option>").appendTo("#roomId");
                         }
+                        $('#roomId').select2();
                     },
                     error: function (e) {
                         console.log(e);
@@ -87,7 +95,7 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                     success: function (results) {
                         console.log(results[0]['name']);
                         $('#faqId').empty();
-                        for(var i=0; i < Object.keys(results).length; i++) {
+                        for (var i = 0; i < Object.keys(results).length; i++) {
                             $("<option value='" + results[i].id + "'>" + results[i].name + "</option>").appendTo("#faqId");
                         }
                     },

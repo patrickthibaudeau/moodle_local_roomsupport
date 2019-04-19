@@ -214,16 +214,15 @@ class Base {
 
         $roomArray = [];
         $i = 0;
-        foreach ($rooms as $r) {
-            if (!$DB->get_record('local_roomsupport_rpi', ['roomid' => $r->id])) {
+        foreach ($rooms as $r) {            
                 $roomArray[$i]['id'] = $r->id;
                 $roomArray[$i]['fullName'] = $r->name;
                 $roomArray[$i]['number'] = $r->roomnumber;
-                $i++;
-            }
+                $i++;            
         }
 
         return $roomArray;
     }
+    
 
 }

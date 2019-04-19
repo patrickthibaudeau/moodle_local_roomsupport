@@ -30,11 +30,19 @@ function display_page() {
     $campusid = optional_param('campusid', 0, PARAM_INT);
 
     if ($id) {
-        $formdata = $DB->get_record('local_roomsupport_buildings', array('id' => $id), '*', MUST_EXIST);
+        $formdata = $DB->get_record('local_roomsupport_buildings', array('id' => $id), '*', MUST_EXIST);        
+        //Get agents
+        $agents = $DB->get_records('local_roomsupport_agent',['paramid' => $id, 'param_type' => PARAM_TYPE_BUILDING]);
+        $agentArray = [];
+        foreach ($agents as $a) {
+            $agentArray[] = $a->userid;
+        }
+        $formdata->agents = $agentArray;
     } else {
         $formdata = new stdClass();
         $formdata->campusid = $campusid;
         $formdata->pi_username = 'pi';
+        $formdata->service_hours = $CFG->roomsupport_service_hours;
     }
 
     $BUILDING = new \local_roomsupport\Building($id);

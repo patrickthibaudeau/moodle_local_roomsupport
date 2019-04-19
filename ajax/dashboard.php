@@ -38,7 +38,8 @@ switch ($action) {
         $data['buildingid'] = $PI->getBuildingId();
         $data['roomid'] = $PI->getRoomId();
         $data['faqid'] = $PI->getFaqId();
-        $data['rooms'] = \local_roomsupport\Base::getRooms($PI->getBuildingId());
+        $BUILDING = new \local_roomsupport\Building($PI->getBuildingId()); 
+        $data['rooms'] = \local_roomsupport\Base::getRooms($BUILDING->getBuildingId());
         $data['faqs'] = $faqArray;
 
         echo json_encode($data);

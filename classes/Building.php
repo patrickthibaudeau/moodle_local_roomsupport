@@ -134,6 +134,7 @@ class Building extends Device {
         }
 
         $this->id = $id;
+        $this->campusId = $results->campusid ?? 0;
         $this->buildingId = $results->buildingid ?? 0;
         //Get building name
         if ($results->buildingid) {

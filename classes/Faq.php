@@ -29,6 +29,12 @@ class Faq extends Device {
 
     /**
      *
+     * @var int 
+     */
+    private $campusId;
+
+    /**
+     *
      * @var string 
      */
     private $userName;
@@ -108,6 +114,7 @@ class Faq extends Device {
         }
 
         $this->id = $id;
+        $this->campusId = $results->campusid ?? 0;
         $this->name = $results->name ?? '';
         if (isset($results->message_en)) {
             $contentEnUrls = file_rewrite_pluginfile_urls($results->message_en,
@@ -238,6 +245,10 @@ class Faq extends Device {
 
     public function getIsAlive() {
         return $this->isAlive;
+    }
+
+    public function getCampusId() {
+        return $this->campusId;
     }
 
 }

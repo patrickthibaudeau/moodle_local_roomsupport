@@ -28,7 +28,7 @@ function display_page() {
     }
 
     $id = optional_param('id', 0, PARAM_INT);
-    $buildingId = required_param('buildingid', PARAM_INT);
+    $campusId = required_param('campusid', PARAM_INT);
 
     if ($id) {
         $formdata = $DB->get_record('local_roomsupport_faq', array('id' => $id), '*',
@@ -52,7 +52,7 @@ function display_page() {
     } else {
         $formdata = new stdClass();
         $formdata->id = 0;
-        $formdata->buildingid = $buildingId;
+        $formdata->campusid = $campusId;
     }
 
     echo \local_roomsupport\Base::page($CFG->wwwroot . '/local/roomsupport/faq.php',
@@ -63,7 +63,7 @@ function display_page() {
 
 // If data submitted, then process and store.
     if ($mform->is_cancelled()) {
-        redirect($CFG->wwwroot . '/local/roomsupport/faqs.php?buildingid=' . $formdata->buildingid);
+        redirect($CFG->wwwroot . '/local/roomsupport/faqs.php?campusid=' . $formdata->campusid);
     } else if ($data = $mform->get_data()) {
         if ($data->id) {
             $data->userid = $USER->id;
@@ -96,7 +96,7 @@ function display_page() {
 
         $DB->update_record('local_roomsupport_faq', $data);
 
-        redirect($CFG->wwwroot . '/local/roomsupport/faqs.php?buildingid=' . $formdata->buildingid);
+        redirect($CFG->wwwroot . '/local/roomsupport/faqs.php?campusid=' . $formdata->campusid);
     }
     //--------------------------------------------------------------------------
     echo $OUTPUT->header();

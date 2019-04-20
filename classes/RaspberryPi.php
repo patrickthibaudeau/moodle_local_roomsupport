@@ -37,6 +37,12 @@ class RaspberryPi extends Device {
      *
      * @var int 
      */
+    private $campusId;
+
+    /**
+     *
+     * @var int 
+     */
     private $roomId;
 
     /**
@@ -140,12 +146,17 @@ class RaspberryPi extends Device {
         } else {
             $results = new \stdClass();
         }
-
+        
         $this->id = $id;
         $this->mac = $results->mac ?? '';
         $this->ip = $results->ip ?? '';
         $this->faqId = $results->faqid ?? 0;
         $this->buildingId = $results->buildingid ?? 0;
+        $this->campusId = 0;
+        if ($this->buildingId) {
+            $BUILDING = new \local_roomsupport\Building($this->buildingId);
+            $this->campusId = $BUILDING->getCampusId();
+        }
         $this->roomId = $results->roomid ?? 0;
         if ($results->roomid) {
             $ROOM = new \local_buildings\Room($results->roomid);
@@ -285,6 +296,10 @@ class RaspberryPi extends Device {
 
     function getRoomId() {
         return $this->roomId;
+    }
+
+    public function getCampusId() {
+        return $this->campusId;
     }
 
 

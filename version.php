@@ -30,7 +30,7 @@
  * ************************************************************************ */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019041902;
+$plugin->version = 2019042000;
 $plugin->component = 'local_roomsupport';
 $plugin->release = '0.0.1';
 $plugin->requires = 2018051700;

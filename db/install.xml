@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/roomsupport/db" VERSION="20190419" COMMENT="XMLDB file for Moodle local/roomsupport"
+<XMLDB PATH="local/roomsupport/db" VERSION="20190420" COMMENT="XMLDB file for Moodle local/roomsupport"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -57,7 +57,7 @@
     <TABLE NAME="local_roomsupport_faq" COMMENT="This table will hold templates of help file that can be assigned to rooms.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="buildingid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="id from roomsupport_buildings table"/>
+        <FIELD NAME="campusid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="USer that modifed the table"/>
         <FIELD NAME="name" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false" COMMENT="Name of template"/>
         <FIELD NAME="message_en" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The body holding the instructions"/>

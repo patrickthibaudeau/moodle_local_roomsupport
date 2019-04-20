@@ -56,7 +56,7 @@ class dashboard implements \renderable, \templatable {
 
         $RPIS = new \local_roomsupport\RaspberryPis($buildingId);
         $rpis = $RPIS->getResults();
-
+        
         $rpiArray = [];
         $i = 0;
         foreach ($rpis as $pi) {

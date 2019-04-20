@@ -25,7 +25,7 @@ switch ($action) {
     case 'getInfo':
         $id = required_param('id', PARAM_INT);
         $PI = new \local_roomsupport\RaspberryPi($id);
-        $FAQS = new \local_roomsupport\Faqs($PI->getBuildingId());
+        $FAQS = new \local_roomsupport\Faqs($PI->getCampusId());
         $faqs = $FAQS->getResults();
         $faqArray = [];
         $i = 0;

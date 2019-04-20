@@ -122,5 +122,17 @@ function xmldb_local_roomsupport_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2019041902, 'local', 'roomsupport');
     }
 
+    if ($oldversion < 2019042000) {
+
+        // Rename field buildingid on table local_roomsupport_faq to NEWNAMEGOESHERE.
+        $table = new xmldb_table('local_roomsupport_faq');
+        $field = new xmldb_field('buildingid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'id');
+
+        // Launch rename field buildingid.
+        $dbman->rename_field($table, $field, 'campusid');
+
+        // Roomsupport savepoint reached.
+        upgrade_plugin_savepoint(true, 2019042000, 'local', 'roomsupport');
+    }
     return true;
 }

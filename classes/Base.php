@@ -126,7 +126,7 @@ class Base {
         $serviceHoursArray = explode("\n", $serviceHours);
         //Days of the week numeric value (array key)
         $days = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
-       
+
         for ($i = 0; $i < count($serviceHoursArray); $i++) {
             //create array for days and hours
             $split = explode('=', $serviceHoursArray[$i]);
@@ -155,75 +155,76 @@ class Base {
                 $availableTimes = [];
                 for ($z = 0; $z < count($timeSplit); $z++) {
                     //seperate the start and end time
-                    $startFinishTimes = explode('-', $timeSplit[$z]);                   
-                    $availableTimes[$z]['start'] = strtotime(date('m/d/Y',time()) . trim($startFinishTimes[0]) . ":00");
-                    $availableTimes[$z]['finish'] = strtotime(date('m/d/Y',time()) . trim($startFinishTimes[1]) . ":00");
+                    $startFinishTimes = explode('-', $timeSplit[$z]);
+                    $availableTimes[$z]['start'] = strtotime(date('m/d/Y', time()) . trim($startFinishTimes[0]) . ":00");
+                    $availableTimes[$z]['finish'] = strtotime(date('m/d/Y', time()) . trim($startFinishTimes[1]) . ":00");
                 }
             } else {
                 //seperate the start and end time
-                $startFinishTimes = explode('-',$split[1]);
+                $startFinishTimes = explode('-', $split[1]);
                 $availableTimes = [];
-                $availableTimes[0]['start'] = strtotime(date('m/d/Y',time()) . " $startFinishTimes[0]:00");
-                $availableTimes[0]['finish'] = strtotime(date('m/d/Y',time()) . " $startFinishTimes[1]:00");
+                $availableTimes[0]['start'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[0]:00");
+                $availableTimes[0]['finish'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[1]:00");
             }
             //By default services are closed
             $open = false;
             //Find out if service desk is open
             if (in_array($today, $dayRange)) {
                 foreach ($availableTimes as $key => $time) {
-                    if ($time['start'] <= time() &&  time() <= $time['finish']) {
+                    if ($time['start'] <= time() && time() <= $time['finish']) {
                         $open = true;
                         break;
                     }
                 }
             }
-            
+
             return $open;
         }
     }
-    
+
     public static function getListOfAgents() {
         global $CFG, $DB;
-        
+
         $role = $DB->get_record('role', array('shortname' => 'classroom_support_agent'));
         $role_assignments = $DB->get_records('role_assignments', array('roleid' => $role->id));
         $userSelect = array();
         foreach ($role_assignments as $ra) {
-            $user = $DB->get_record('user',['id' => $ra->userid]);
+            $user = $DB->get_record('user', ['id' => $ra->userid]);
             $userSelect[$ra->userid] = fullname($user);
         }
-        
+
         return $userSelect;
-                
     }
-    
-      public static function getRooms($buildingId) {
+
+    public static function getRooms($buildingId) {
         global $CFG, $DB;
 
         $roomsSql = 'Select'
-                . '    {buildings_room}.id as id,'
-                . '    {buildings_room}.roomnumber as roomnumber,'
-                . '    {buildings_room}.name as name'
+                . '    br.id as id,'
+                . '    br.roomnumber as roomnumber,'
+                . '    br.name as name'
                 . ' From'
-                . '    {buildings_floor} '
-                . '    Inner Join {buildings_room} On {buildings_room}.floorid = {buildings_floor}.id'
+                . '    {buildings_floor} bf'
+                . '    Inner Join {buildings_room} br On br.floorid = bf.id'
                 . ' Where'
-                . '    {buildings_floor}.buildingid = ?';
+                . '    bf.buildingid = ?';
 
 
         $rooms = $DB->get_records_sql($roomsSql, [$buildingId]);
 
         $roomArray = [];
         $i = 0;
-        foreach ($rooms as $r) {            
-                $roomArray[$i]['id'] = $r->id;
-                $roomArray[$i]['fullName'] = $r->name;
-                $roomArray[$i]['number'] = $r->roomnumber;
-                $i++;            
+        foreach ($rooms as $r) {
+            $roomArray[$i]['id'] = $r->id;
+            $roomArray[$i]['fullName'] = $r->name;
+            $roomArray[$i]['number'] = $r->roomnumber;
+            $i++;
         }
-
+        //Sort array by room number
+        usort($roomArray, function($item1, $item2) {
+            return $item1['number'] <=> $item2['number'];
+        });
         return $roomArray;
     }
-    
 
 }

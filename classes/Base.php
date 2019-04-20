@@ -227,4 +227,34 @@ class Base {
         return $roomArray;
     }
 
+    /**
+     * Returns all buildings for the campus
+     * @global \moodle_database $DB
+     */
+    public static function getCampusBuildings($campusId, $buildingId = null) {
+        global $CFG, $DB;
+
+        $BUILDINGS = new \local_roomsupport\Buildings($campusId);
+        $buildings = $BUILDINGS->getResults();
+
+        $buildingArray = [];
+        $i = 0;
+        $selected = '';
+        foreach ($buildings as $b) {
+            $BUILDING = new \local_roomsupport\Building($b->id);
+            $buildingArray[$i]['id'] = $b->id;
+            $buildingArray[$i]['buildingId'] = $BUILDING->getBuildingId();
+            $buildingArray[$i]['name'] = $BUILDING->getBuildingFullName();
+            $buildingArray[$i]['shortName'] = $BUILDING->getBuildingShortName();
+            if (!is_null($buildingId)) {
+                if ($b->id == $buildingId) {
+                    $selected = 'selected';
+                }
+            }
+            $buildingArray[$i]['selected'] = $selected;
+            $i++;
+        }
+
+        return $buildingArray;
+    }
 }

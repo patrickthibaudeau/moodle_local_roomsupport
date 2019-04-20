@@ -29,6 +29,8 @@ function display_page() {
     global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 
     $id = optional_param('id', 0, PARAM_INT); //List id
+    $buildingId = optional_param('buildingid', null, PARAM_INT); //Building id
+    $campusId = required_param('campusid', PARAM_INT); //Campus id
 
     require_login(1, false); //Use course 1 because this has nothing to do with an actual course, just like course 1
 
@@ -50,7 +52,7 @@ function display_page() {
     //*** DISPLAY CONTENT **
     //**********************
     $output = $PAGE->get_renderer('local_roomsupport');
-    $logs = new \local_roomsupport\output\logs();
+    $logs = new \local_roomsupport\output\logs($campusId,$buildingId);
     echo '<div id="logsContainer">';
     echo $output->render_logs($logs);
     echo '</div>';

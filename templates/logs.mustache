@@ -1,11 +1,18 @@
 <div class="row">
     <div class="col">
         <h2>{{#str}}logs, local_roomsupport{{/str}} 
-            <span class="float-right">
-                <a href="../index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}} ">
-                    {{#str}}dashboard, local_roomsupport{{/str}} 
-                </a>
-            </span>
+            <div class="float-right">
+                <div class="form-inline">
+                    <select id="buildingId" class="form-control mr-2" data-campusid="{{{campusId}}}">
+                        {{#buildings}}
+                        <option value="{{id}}" {{selected}}>{{name}}</option>
+                        {{/buildings}}
+                    </select>
+                    <a href="../index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}} ">
+                        {{#str}}dashboard, local_roomsupport{{/str}} 
+                    </a>
+                </div>
+            </div>
         </h2>
     </div>
 </div>
@@ -60,4 +67,8 @@
     </table>
 </div>
 
-
+{{#js}}
+require(['local_roomsupport/logs'], function(mod) {
+mod.init();
+});
+{{/js}}

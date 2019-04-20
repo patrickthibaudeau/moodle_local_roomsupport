@@ -16,8 +16,12 @@ namespace local_roomsupport\output;
  */
 class logs implements \renderable, \templatable {
 
-    public function __construct() {
-        
+    private $buildingId;
+    private $campusId;
+
+    public function __construct($campusId, $buildingId = null ) {
+        $this->buildingId = $buildingId;
+        $this->campusId = $campusId;
     }
 
     /**
@@ -32,7 +36,9 @@ class logs implements \renderable, \templatable {
 
         $data = [
             'wwwroot' => $CFG->wwwroot,
-            'stats' => $this->getLogs()
+            'stats' => $this->getLogs(),
+            'campusId' => $this->campusId,
+            'buildings' => \local_roomsupport\Base::getCampusBuildings($this->campusId, $this->buildingId)
         ];
 
         return $data;
@@ -45,7 +51,23 @@ class logs implements \renderable, \templatable {
     private function getLogs() {
         global $DB;
 
-        $results = $DB->get_records('local_roomsupport_call_log');
+        $sql = 'Select '
+                . 'cl.id as id,'
+                . 'cl.rpiid as rpiid, '
+                . 'rpi.buildingid as buildingid, '
+                . 'b.campusid as campusid '
+                . 'From '
+                . '{local_roomsupport_call_log} cl Inner Join '
+                . '{local_roomsupport_rpi} rpi On rpi.id = cl.rpiid Inner Join '
+                . '{local_roomsupport_buildings} b On b.id = rpi.buildingid '
+                . 'WHERE b.campusid = ? ';
+        $params = [$this->campusId];
+        if (!is_null($this->buildingId)) {
+            $sql .= ' AND b.id = ?';
+            $params = [$this->campusId, $this->buildingId];
+        } 
+
+        $results = $DB->get_records_sql($sql, $params);
 
         $returnArray = [];
         $i = 0;

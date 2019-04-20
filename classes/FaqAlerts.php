@@ -20,7 +20,7 @@ class FaqAlerts extends Devices {
      * @var \stdClass   
      */
     private $results;
-    
+
     /**
      * Returns records with status open
      * @var \stdClass   
@@ -33,7 +33,7 @@ class FaqAlerts extends Devices {
      * @global \moodle_database $DB
      */
     public function __construct() {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         $this->results = $DB->get_records('local_roomsupport_call_log');
         $this->resultsOpen = $DB->get_records('local_roomsupport_call_log', ['status' => false]);
@@ -56,12 +56,36 @@ class FaqAlerts extends Devices {
     public function getResults() {
         return $this->results;
     }
-    
-    public function getResultsOpen() {
+
+    public function getOpenCallsPerAgent() {
+        global $DB, $USER;
+
+        $sql = 'Select '
+                . '    cl.id, '
+                . '    cl.rpiid, '
+                . '    cl.agentid, '
+                . '    cl.status, '
+                . '    cl.timecreated, '
+                . '    cl.timereplied, '
+                . '    cl.timeclosed '
+                . 'From '
+                . '    {local_roomsupport_call_log} cl Inner Join '
+                . '    {local_roomsupport_rpi} rpi On rpi.id = cl.rpiid Inner Join '
+                . '    {local_roomsupport_agent} a On a.paramid = rpi.buildingid '
+                . 'Where '
+                . '    a.userid = ? And '
+                . '    a.param_type = ? And '
+                . '    cl.status = 0 ';
+        
+        $openCalls = $DB->get_records_sql($sql,[$USER->id, PARAM_TYPE_BUILDING]);
+        return $openCalls;
+    }
+
+    function getResultsOpen() {
         return $this->resultsOpen;
     }
 
-    public function getHtml() {
+        public function getHtml() {
         
     }
 

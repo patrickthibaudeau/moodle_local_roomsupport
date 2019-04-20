@@ -50,8 +50,8 @@ function display_page() {
     //**********************
     //*** DISPLAY CONTENT **
     //**********************
-    echo trim(($CFG->roomsupport_sms_agent_numbers));
-echo '$CFG->roomsupport_auto_redirect: ' . $CFG->roomsupport_auto_redirect;
+$OBJ = new \local_roomsupport\FaqAlerts();
+$OBJ->getResultsOpen();
     //**********************
     //*** DISPLAY FOOTER ***
     //**********************

@@ -159,9 +159,14 @@ class local_roomsupport_external extends external_api {
             $data['rpiid'] = $rpi->id;
             $data['timecreated'] = time();
             $newCall = $DB->insert_record('local_roomsupport_call_log', $data);
+            
+            // The Building object is required for phone numbers and room name
+            $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
+            $ROOM = new \local_buildings\Room($rpi->roomid);
+            
 
-            $subject = 'Room ' . trim($rpi->building_shortname) . ' ' . trim($rpi->room_number) . ' requires attention (log id: ' . $newCall . ')';
-            $message = 'A call from ' . trim($rpi->building_shortname) . ' ' . trim($rpi->room_number)
+            $subject = 'Room ' . trim($ROOM->getBuildingShortName()) . ' ' . trim($ROOM->getRoomNumber()) . ' requires attention (log id: ' . $newCall . ')';
+            $message = 'A call from ' . trim($ROOM->getBuildingShortName()) . ' ' . trim($ROOM->getRoomNumber())
                     . ' was initiated at ' . date('H:i', $data['timecreated']) . ' on ' . date('F d, Y ', $data['timecreated']);
 
             //Send email to ticketing system.
@@ -183,7 +188,7 @@ class local_roomsupport_external extends external_api {
             if (($CFG->roomsupport_sms_apikey == true) && ($CFG->roomsupport_sms_agent_numbers == true)) {
                 $message .= "\n\n$CFG->wwwroot/local/roomsupport/agent/index.php";
                 $client = new SoapClient('http://www.smsgateway.ca/sendsms.asmx?WSDL');
-                $cellNumbers = explode(',', $CFG->roomsupport_sms_agent_numbers);
+                $cellNumbers = $BUILDING->getAgentPhones();
                 if (count($cellNumbers) > 1) {
                     $parameters = new SMSBulkParam();
                     $parameters->AccountKey = trim($CFG->roomsupport_sms_apikey);
@@ -196,7 +201,7 @@ class local_roomsupport_external extends external_api {
                     $parameters->AccountKey = trim($CFG->roomsupport_sms_apikey);
                     $parameters->MessageBody = "$message";
                     $parameters->Reference = "$newCall";
-                    $parameters->CellNumber = trim($CFG->roomsupport_sms_agent_numbers);
+                    $parameters->CellNumber = trim($cellNumbers[0]);
                     $Result = $client->SendMessage($parameters);
                 }
             }
@@ -481,9 +486,12 @@ class local_roomsupport_external extends external_api {
         if (!has_capability('local/roomsupport:rpi', $context)) {
             throw new moodle_exception('cannotaccesssystem', 'local_roomsupport');
         }
+        
+        $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
+        $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
 
         $return = [];
-        $return[]['open'] = \local_roomsupport\Base::getServiceHours();
+        $return[]['open'] = $BUILDING->getServiceHours();
         //Look for existing mac in table
         return $return;
     }

@@ -164,14 +164,14 @@ class Building extends Device {
         }
 
         //Get agent Phones
-        $agents = $DB->get_records('local_roomsupport_agents', ['paramid' => $id, 'param_type' => PARAM_TYPE_BUILDING]);
+        $agents = $DB->get_records('local_roomsupport_agent', ['paramid' => $id, 'param_type' => PARAM_TYPE_BUILDING]);
 
         $agentsArray = [];
         $i = 0;
         foreach ($agents as $a) {
             $user = $DB->get_record('user', ['id' => $a->userid]);
-            if ($user->phone) {
-                $agentsArray[$i] = $user->phone;
+            if ($user->phone1) {
+                $agentsArray[$i] = $user->phone1;
                 $i++;
             }
             if ($user->phone2) {
@@ -215,6 +215,74 @@ class Building extends Device {
         }
 
         $DB->update_record($this->dbTable, $data);
+    }
+
+    /**
+     * Verifies if the services are available or not
+     * @global \stdClass $CFG
+     * @return boolean
+     */
+    public function getServiceHours() {
+        global $CFG;
+        $serviceHours = $this->serviceHours;
+        $serviceHoursArray = explode("\n", $serviceHours);
+        print_object($serviceHoursArray);
+        //Days of the week numeric value (array key)
+        $days = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
+
+        for ($i = 0; $i < count($serviceHoursArray); $i++) {
+            //create array for days and hours
+            $split = explode('=', $serviceHoursArray[$i]);
+            //Split days based on delimiter
+            if (strstr($split[0], '-')) {
+                $daySplit = explode('-', $split[0]);
+                //Get days
+                $firstDay = array_search($daySplit[0], $days);
+                $lastDay = array_search($daySplit[1], $days);
+                //Create dayRange array
+                $dayRange = [];
+                for ($x = $firstDay; $x <= $lastDay; $x++) {
+                    $dayRange[] = $days[$x];
+                }
+            } elseif (strstr($split[0], ',')) {
+                $dayRange = explode(',', $split[0]);
+            } else {
+                $dayRange = [$split[0]];
+            }
+            //Get todays day
+            $today = $days[date('w', time())];
+
+            //Get times
+            if (strstr($split[1], ',')) {
+                $timeSplit = explode(',', $split[1]);
+                $availableTimes = [];
+                for ($z = 0; $z < count($timeSplit); $z++) {
+                    //seperate the start and end time
+                    $startFinishTimes = explode('-', $timeSplit[$z]);
+                    $availableTimes[$z]['start'] = strtotime(date('m/d/Y', time()) . trim($startFinishTimes[0]) . ":00");
+                    $availableTimes[$z]['finish'] = strtotime(date('m/d/Y', time()) . trim($startFinishTimes[1]) . ":00");
+                }
+            } else {
+                //seperate the start and end time
+                $startFinishTimes = explode('-', $split[1]);
+                $availableTimes = [];
+                $availableTimes[0]['start'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[0]:00");
+                $availableTimes[0]['finish'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[1]:00");
+            }
+            //By default services are closed
+            $open = false;
+            //Find out if service desk is open
+            if (in_array($today, $dayRange)) {
+                foreach ($availableTimes as $key => $time) {
+                    if ($time['start'] <= time() && time() <= $time['finish']) {
+                        $open = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $open;
     }
 
     /**
@@ -263,10 +331,6 @@ class Building extends Device {
         return $this->ticketingEmail;
     }
 
-    function getServiceHours() {
-        return $this->serviceHours;
-    }
-
     function getCellNumbers() {
         return $this->cellNumbers;
     }
@@ -290,7 +354,7 @@ class Building extends Device {
     function getDbTable() {
         return $this->dbTable;
     }
-    
+
     function getAgentPhones() {
         return $this->agentPhones;
     }

@@ -40,7 +40,7 @@ class faq_alerts implements \renderable, \templatable {
     
     private function getFaqAlerts() {
         $FAQALERTS = new \local_roomsupport\FaqAlerts();
-        $results = $FAQALERTS->getResultsOpen();
+        $results = $FAQALERTS->getOpenCallsPerAgent();
         $i = 0;
         $resultsArray = [];
         foreach ($results as $r) {

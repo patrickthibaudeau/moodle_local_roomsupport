@@ -117,9 +117,10 @@ class Base {
     /**
      * Verifies if the services are available or not
      * @global \stdClass $CFG
+     * @deprecated
      * @return boolean
      */
-    public static function getServiceHours() {
+    public static function getServiceHoursDeprecated() {
         global $CFG;
         $serviceHours = $CFG->roomsupport_service_hours;
         $serviceHoursArray = explode("\n", $serviceHours);

@@ -231,9 +231,9 @@ class Base {
      * Returns all buildings for the campus
      * @global \moodle_database $DB
      */
-    public static function getCampusBuildings($campusId, $buildingId = null) {
+    public static function getCampusBuildings($campusId, $buildingId = 0) {
         global $CFG, $DB;
-
+        
         $BUILDINGS = new \local_roomsupport\Buildings($campusId);
         $buildings = $BUILDINGS->getResults();
 
@@ -246,9 +246,11 @@ class Base {
             $buildingArray[$i]['buildingId'] = $BUILDING->getBuildingId();
             $buildingArray[$i]['name'] = $BUILDING->getBuildingFullName();
             $buildingArray[$i]['shortName'] = $BUILDING->getBuildingShortName();
-            if (!is_null($buildingId)) {
-                if ($b->id == $buildingId) {
+            if ($buildingId) {
+                if (trim($b->id) == ($buildingId)) {
                     $selected = 'selected';
+                } else {
+                    $selected = '';
                 }
             }
             $buildingArray[$i]['selected'] = $selected;

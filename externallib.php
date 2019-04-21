@@ -155,7 +155,13 @@ class local_roomsupport_external extends external_api {
         $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
         //Check to see if a call is already in progress
         if (!$inProgress = $DB->get_record('local_roomsupport_call_log', ['rpiid' => $rpi->id, 'status' => 0])) {
+            // The Building object is required for phone numbers and room name
+            $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
+            $ROOM = new \local_buildings\Room($rpi->roomid);
+            
             $data = [];
+            $data['campusid'] = $BUILDING->getCampusId();
+            $data['buildingid'] = $BUILDING->getId();
             $data['rpiid'] = $rpi->id;
             $data['timecreated'] = time();
             $newCall = $DB->insert_record('local_roomsupport_call_log', $data);

@@ -134,5 +134,30 @@ function xmldb_local_roomsupport_upgrade($oldversion) {
         // Roomsupport savepoint reached.
         upgrade_plugin_savepoint(true, 2019042000, 'local', 'roomsupport');
     }
+
+    if ($oldversion < 2019042100) {
+
+        // Define field campusid to be added to local_roomsupport_call_log.
+        $table = new xmldb_table('local_roomsupport_call_log');
+        $field = new xmldb_field('campusid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'id');
+
+        // Conditionally launch add field campusid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        
+        // Define field campusid to be added to local_roomsupport_call_log.
+        $table = new xmldb_table('local_roomsupport_call_log');
+        $field = new xmldb_field('buildingid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'campusid');
+
+        // Conditionally launch add field campusid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Roomsupport savepoint reached.
+        upgrade_plugin_savepoint(true, 2019042100, 'local', 'roomsupport');
+    }
+
     return true;
 }

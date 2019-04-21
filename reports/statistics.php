@@ -29,6 +29,8 @@ function display_page() {
     global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 
     $id = optional_param('id', 0, PARAM_INT); //List id
+    $campusId = required_param('campusid', PARAM_INT); //List id
+    $buildingId = optional_param('buildingid', null, PARAM_INT); //List id
     $from = null;
     $to = null;
     $dateRange = optional_param('daterange', null, PARAM_TEXT);
@@ -64,7 +66,7 @@ function display_page() {
     //*** DISPLAY CONTENT **
     //**********************
     $output = $PAGE->get_renderer('local_roomsupport');
-    $statistics = new \local_roomsupport\output\statistics($from, $to);
+    $statistics = new \local_roomsupport\output\statistics($campusId, $buildingId, $from, $to);
     echo '<div id="statisticsContainer">';
     echo $output->render_statistics($statistics);
     echo '</div>';

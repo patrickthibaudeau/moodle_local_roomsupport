@@ -26,11 +26,25 @@ class statistics implements \renderable, \templatable {
      *
      * @var int 
      */
+    private $buildingId;
+    
+    /**
+     *
+     * @var int 
+     */
+    private $campusId;
+    
+    /**
+     *
+     * @var int 
+     */
     private $to;
 
-    public function __construct($from = null, $to = null) {
+    public function __construct($campusId, $buildingId = null, $from = null, $to = null) {
         $this->from = $from;
         $this->to = $to;
+        $this->campusId = $campusId;
+        $this->buildingId = $buildingId;
     }
 
     /**
@@ -43,7 +57,7 @@ class statistics implements \renderable, \templatable {
     public function export_for_template(\renderer_base $output) {
         global $CFG, $USER, $DB;
 
-        $responseTimes = \local_roomsupport\Statistics::getDifferenceTimeCreatedTimeReplied($this->from, $this->to); 
+        $responseTimes = \local_roomsupport\Statistics::getDifferenceTimeCreatedTimeReplied($this->campusId, $this->buildingId, $this->from, $this->to); 
                
         $data = [
             'wwwroot' => $CFG->wwwroot,
@@ -55,14 +69,15 @@ class statistics implements \renderable, \templatable {
             'totalCalls' => $responseTimes['numberOfCalls'],
             'startDate' => $this->convertToDate($this->from),
             'endDate' => $this->convertToDate($this->to),
+            'campusId' => $this->campusId,
+            'buildings' => \local_roomsupport\Base::getCampusBuildings($this->campusId, $this->buildingId)
         ];
-
         return $data;
     }
 
     private function callsToRoom() {
         global $OUTPUT;
-        $stats = \local_roomsupport\Statistics::getDeviceCalls($this->from, $this->to);
+        $stats = \local_roomsupport\Statistics::getDeviceCalls($this->campusId, $this->buildingId, $this->from, $this->to);
         $chart = new \core\chart_bar();
         $chart->set_horizontal(true);
         $chart->add_series($stats['data']);
@@ -73,7 +88,7 @@ class statistics implements \renderable, \templatable {
     
     private function agents() {
         global $OUTPUT;
-        $stats = \local_roomsupport\Statistics::getAgents($this->from, $this->to);
+        $stats = \local_roomsupport\Statistics::getAgents($this->campusId, $this->buildingId, $this->from, $this->to);
         $chart = new \core\chart_pie();
         $chart->add_series($stats['data']);
         $chart->set_labels($stats['labels']);

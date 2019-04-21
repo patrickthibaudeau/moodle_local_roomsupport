@@ -25,20 +25,13 @@ define(['jquery', 'jqueryui', 'local_roomsupport/daterangepicker'], function ($,
             endDate: endDate,
         });
 
-        $('#dateRange').change(function () {
-            var dateRange = $(this).val();
-            window.location = wwwroot + '/local/roomsupport/reports/statistics.php?daterange=' + dateRange;
-//            $.ajax({
-//                url: wwwroot + '/local/roomsupport/ajax/statistics.php?action=changeDate',
-//                data: '&daterange=' + dateRange,
-//                dataType: 'html',
-//                success: function (results) {
-//                    console.log(results);
-//                },
-//                error: function (e) {
-//                    console.log(e);
-//                }
-//            });
+        $('#dateRange, #buildingId').change(function () {
+            var dateRange = $('#dateRange').val();
+            var campusId = $("#campusId").val();
+            var buildingId = $("#buildingId").val();
+            window.location = wwwroot + '/local/roomsupport/reports/statistics.php?daterange=' + dateRange
+                    + '&campusid=' + campusId + '&buildingid=' + buildingId;
+
         });
     }
     

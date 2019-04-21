@@ -9,18 +9,26 @@
             <div class="col">
                 <div class="form-row float-right">
                     <div class="col-auto">
-                        <div class="input-group mr-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        <div class="form-inline">
+                            <input type="hidden" id="campusId" value="{{{campusId}}}">
+                            <select id="buildingId" class="form-control mr-2">
+                                {{#buildings}}
+                                <option value="{{id}}" {{selected}}>{{name}}</option>
+                                {{/buildings}}
+                            </select>
+                            <div class="input-group mr-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                                <input type="text" id="dateRange" value="" class="form-control" placeholder="{{#str}}search, local_roomsupport{{/str}}">
                             </div>
-                            <input type="text" id="dateRange" value="" class="form-control" placeholder="{{#str}}search, local_roomsupport{{/str}}">
                         </div>
                     </div>
-<!--                    <div class="col-auto">
-                        <a href="javascript:void(0);" class="btn btn-outline-primary" title=" ">
-                            <i class="fa fa-search"></i>
-                        </a>
-                    </div>-->
+                    <!--                    <div class="col-auto">
+                                            <a href="javascript:void(0);" class="btn btn-outline-primary" title=" ">
+                                                <i class="fa fa-search"></i>
+                                            </a>
+                                        </div>-->
                     <div class="col-auto">                
                         <a href="../index.php" class="btn btn-outline-primary" title="{{#str}}dashboard, local_roomsupport{{/str}} ">
                             {{#str}}dashboard, local_roomsupport{{/str}} 

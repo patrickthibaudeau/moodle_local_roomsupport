@@ -218,6 +218,10 @@ class RaspberryPi extends Device {
         $data['timemodified'] = time();
         
         $DB->update_record($this->dbTable, $data);
+        //Also update call_logs
+        $callLogDataSql = "UPDATE {local_roomsupport_call_log} SET buildingid=" . $data['buildingid']
+                . " WHERE rpiid=" . $data['id'];
+        $DB->execute($callLogDataSql);
     }
 
     /**
@@ -228,6 +232,9 @@ class RaspberryPi extends Device {
         global $DB;
         
         $DB->delete_records($this->dbTable,['id' => $this->id] );
+        //Also delete all call log data
+        $callLogDataSql = "DELETE {local_roomsupport_call_log} WHERE rpiid=" . $data['id'];
+        $DB->execute($callLogDataSql);
     }
 
     public function getId() {

@@ -30,11 +30,11 @@
  * ************************************************************************ */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019042100;
+$plugin->version = 2019042101;
 $plugin->component = 'local_roomsupport';
 $plugin->release = '0.0.1';
 $plugin->requires = 2018051700;
-$plugin->maturity = MATURITY_BETA;
+$plugin->maturity = MATURITY_STABLE;
 $plugin->dependencies = array(
     'local_buildings' => 2017080900,
 );

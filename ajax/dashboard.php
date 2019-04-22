@@ -24,8 +24,9 @@ $action = required_param('action', PARAM_TEXT);
 switch ($action) {
     case 'getInfo':
         $id = required_param('id', PARAM_INT);
+        $campusId = required_param('campusid', PARAM_INT);
         $PI = new \local_roomsupport\RaspberryPi($id);
-        $FAQS = new \local_roomsupport\Faqs($PI->getCampusId());
+        $FAQS = new \local_roomsupport\Faqs($campusId);
         $faqs = $FAQS->getResults();
         $faqArray = [];
         $i = 0;
@@ -38,7 +39,7 @@ switch ($action) {
         $data['buildingid'] = $PI->getBuildingId();
         $data['roomid'] = $PI->getRoomId();
         $data['faqid'] = $PI->getFaqId();
-        $BUILDING = new \local_roomsupport\Building($PI->getBuildingId()); 
+        $BUILDING = new \local_roomsupport\Building($PI->getBuildingId());
         $data['rooms'] = \local_roomsupport\Base::getRooms($BUILDING->getBuildingId());
         $data['faqs'] = $faqArray;
 
@@ -98,6 +99,11 @@ switch ($action) {
             $i++;
         }
         echo json_encode($faqArray);
+        break;
+    case 'deleteBuilding' :
+        $id = required_param('id', PARAM_INT);
+        $BUILDING = new \local_roomsupport\Building($id);
+        $BUILDING->delete();
         break;
 }
 

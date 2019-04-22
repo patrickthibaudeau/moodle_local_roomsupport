@@ -2,7 +2,7 @@
     {{#unassignedDevices}}
     <div class="card {{#status}}online{{/status}}{{^status}}offline{{/status}} mb-2">
         <div class="card-header ">
-            {{{room}}}
+            {{{mac}}} - {{ip}}
         </div>
         <div class="card-body">
             <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#detailsModal{{{id}}}">

@@ -291,8 +291,21 @@ class Building extends Device {
      * @global \moodle_database $DB
      */
     public function delete() {
-        global $DB;
-
+        global $DB, $USER;
+        //Get all Dervices and unaasign the building
+        $devices = $DB->get_records('local_roomsupport_rpi', ['buildingid' => $this->id]);
+        
+        foreach ($devices as $d) {
+            $data['id'] = $d->id;
+            $data['buildingid'] = 0;
+            $data['roomid'] = 0;
+            $data['userid'] = $USER->id;
+            $data['timemodified'] = time();
+            $DB->update_record('local_roomsupport_rpi', $data);
+        }
+        //Remove all call logs
+        $DB->delete_records('local_roomsupport_call_log', ['buildingid' => $this->id]);
+        //Remove building
         $DB->delete_records($this->dbTable, ['id' => $this->id]);
     }
 

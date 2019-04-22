@@ -51,6 +51,7 @@ $string['buildings'] = 'Buildings';
 $string['building_abbreviation'] = 'Build short name';
 $string['building_name'] = 'Building name';
 $string['calls_per_room'] = 'Calls per room';
+$string['cancel'] = 'Cancel';
 $string['cannotaccesssystem'] = 'You don have permission to access this system.';
 $string['change'] = 'Change';
 $string['change_campus'] = 'Change campus';
@@ -60,6 +61,9 @@ $string['default_campus'] = 'Default campus';
 $string['default_campus_help'] = 'Select a default campus to be used when logging into the system.';
 $string['default_settings'] = 'Default settings';
 $string['delete'] = 'Delete';
+$string['delete_building_confirmation'] = 'Are you sure you want to delete this building? '
+        . 'This will unassign all devices and delete all logs associated with this building. '
+        . '<span style="color:red; font-weight: bold;">The data will be lost and unrecoverable.</span>';
 $string['delete_confirmation'] = 'Are you sure you want to delete this device? If it is still on the network and communicationg with this server, it will be recreated.';
 $string['delete_faq_confirmation'] = 'Are you sure you want to delete this faq entry? This cannot be undone.';
 $string['details'] = 'Details';

@@ -8,8 +8,9 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
      */
     function initDashboard() {
         load();
-        initEditModal();
-        initDeleteModal();
+        editDeviceModal();
+        deleteDeviceModal();
+        deleteBuildingModal()
         rebootPi();
         reloadContents();
     }
@@ -31,14 +32,15 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
      * Holds all functionality for the user select box
      * @returns {undefined}
      */
-    function initEditModal() {
+    function editDeviceModal() {
         var wwwroot = M.cfg.wwwroot;
 
         $(".editRpi").click(function () {
             $('#savePiBtn').unbind();
             var id = $(this).data('id');
+            var campusId = $('#campusId').val();
             $.ajax({
-                url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=getInfo&id=' + id,
+                url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=getInfo&id=' + id + '&campusid=' + campusId,
                 dataType: 'json',
                 success: function (results) {
                     console.log(results);
@@ -125,7 +127,7 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
 
     }
 
-    function initDeleteModal() {
+    function deleteDeviceModal() {
         var wwwroot = M.cfg.wwwroot;
 
         $('.deleteRpi').click(function () {
@@ -140,6 +142,33 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
             $('#deleteBtn').click(function () {
                 $.ajax({
                     url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=delete&id=' + id,
+                    dataType: 'text',
+                    success: function (deleted) {
+                        location.reload();
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+        });
+    }
+    
+    function deleteBuildingModal() {
+        var wwwroot = M.cfg.wwwroot;
+
+        $('.deleteBuilding').click(function () {
+            var id = $(this).data('id');
+            console.log(id);
+            var content = M.util.get_string('delete_building_confirmation', 'local_roomsupport');
+            $('#delete-content').html(content);
+            $("#deleteModal").modal({
+                show: true,
+                focus: true
+            });
+            $('#deleteBtn').click(function () {
+                $.ajax({
+                    url: wwwroot + '/local/roomsupport/ajax/dashboard.php?action=deleteBuilding&id=' + id,
                     dataType: 'text',
                     success: function (deleted) {
                         location.reload();

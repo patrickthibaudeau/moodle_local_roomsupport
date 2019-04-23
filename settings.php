@@ -89,11 +89,4 @@ if ($hassiteconfig) {
     $help = get_string('sms_apikey_help', 'local_roomsupport');
     $params = '';
     $settings->add(new admin_setting_configtextarea($name, $text, $help, '', PARAM_RAW));
-
-//SMS agent numbers
-    $name = 'roomsupport_sms_agent_numbers';
-    $text = get_string('agent_phone_numbers', 'local_roomsupport');
-    $help = get_string('agent_phone_numbers_help', 'local_roomsupport');
-    $params = '';
-    $settings->add(new admin_setting_configtextarea($name, $text, $help, '', PARAM_RAW));
 }

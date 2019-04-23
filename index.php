@@ -34,6 +34,10 @@ function display_page() {
     require_login(1, false); //Use course 1 because this has nothing to do with an actual course, just like course 1
 
     $context = context_system::instance();
+    
+    if (!has_capability('local/roomsupport:admin', $context)) {
+        redirect($CFG->wwwroot, get_string('cannotaccesssystem', 'local_roomsupport'));
+    }
 
     $pagetitle = get_string('pluginname', 'local_roomsupport');
     $pageheading = get_string('pluginname', 'local_roomsupport');

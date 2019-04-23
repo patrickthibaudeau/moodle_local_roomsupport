@@ -227,7 +227,6 @@ class Building extends Device {
         global $CFG;
         $serviceHours = $this->serviceHours;
         $serviceHoursArray = explode("\n", $serviceHours);
-        print_object($serviceHoursArray);
         //Days of the week numeric value (array key)
         $days = ['U', 'M', 'T', 'W', 'R', 'F', 'S'];
 
@@ -270,20 +269,17 @@ class Building extends Device {
                 $availableTimes[0]['start'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[0]:00");
                 $availableTimes[0]['finish'] = strtotime(date('m/d/Y', time()) . " $startFinishTimes[1]:00");
             }
-            //By default services are closed
-            $open = false;
+            
             //Find out if service desk is open
             if (in_array($today, $dayRange)) {
                 foreach ($availableTimes as $key => $time) {
-                    if ($time['start'] <= time() && time() <= $time['finish']) {
-                        $open = true;
-                        break;
+                    if ($time['start'] <= time() && time() <= $time['finish']) {   
+                        return true;
                     }
                 }
             }
         }
-
-        return $open;
+        return false;
     }
 
     /**

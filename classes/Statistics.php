@@ -45,7 +45,7 @@ class Statistics {
             $RPI = new \local_roomsupport\RaspberryPi($d->id);
             $count = $DB->get_record_sql($countSql, $params);
 
-            $labels[] = $RPI->getBuildingShortName() . ' ' . $RPI->getRoomNumber();
+            $labels[] = $RPI->getRoomNumber();
             $dataSets[] = $count->total;
         }
         $data = ['data' => new \core\chart_series(get_string('calls_per_room', 'local_roomsupport'), $dataSets), 'labels' => $labels];

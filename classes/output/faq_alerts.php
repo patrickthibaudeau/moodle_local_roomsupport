@@ -53,7 +53,7 @@ class faq_alerts implements \renderable, \templatable {
             $resultsArray[$i]['timecreated'] = $FAQALERT->getTimeCreatedHr();
             $resultsArray[$i]['timereplied'] = $FAQALERT->getTimeRepliedHr();
             $resultsArray[$i]['timeclosed'] = $FAQALERT->getTimeClosedHr();
-            $resultsArray[$i]['room'] = $RPI->getBuildingShortName() . ' - ' . $RPI->getRoomNumber();
+            $resultsArray[$i]['room'] = $RPI->getRoomNumber();
             $i++;
             unset($FAQALERT);
             unset($RPI);           

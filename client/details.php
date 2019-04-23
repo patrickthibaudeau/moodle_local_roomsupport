@@ -37,19 +37,16 @@ if ($device = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP])) {
                 </div>
             </div>
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-                    <a href="index.php" class="btn btn-outline-danger btn-lg mr-3" id="serviceClosed">
-                        <?php echo get_string('services_closed', 'local_roomsupport');?>
-                    </a>
-                    <span class="float-right">
-                        <a href="index.php" id="itWorksBtn" class="btn btn-outline-success btn-lg mr-2"><?php echo get_string('it_works', 'local_roomsupport'); ?></a>
-                        <a href="javascript:void(0);" class="btn btn-outline-danger btn-lg helpBtn"><?php echo get_string('help', 'local_roomsupport'); ?></a>
-                    </span>
-                </div>
-            </nav>
+            <div id="footer" class="bg-light">
+                <a href="index.php" class="btn btn-outline-danger btn-lg mr-3" id="serviceClosed">
+                    <?php echo get_string('services_closed', 'local_roomsupport'); ?>
+                </a>
+                <span class="float-right">
+                    <a href="index.php" id="itWorksBtn" class="btn btn-outline-success btn-lg mr-2"><?php echo get_string('it_works', 'local_roomsupport'); ?></a>
+                    <a href="javascript:void(0);" class="btn btn-outline-danger btn-lg helpBtn"><?php echo get_string('help', 'local_roomsupport'); ?></a>
+                </span>
+
+            </div>
         </div>
 
         <!-- Modal used for help call -->

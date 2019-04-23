@@ -156,23 +156,18 @@ class local_roomsupport_external extends external_api {
         //Check to see if a call is already in progress
         if (!$inProgress = $DB->get_record('local_roomsupport_call_log', ['rpiid' => $rpi->id, 'status' => 0])) {
             // The Building object is required for phone numbers and room name
-            $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
-            $ROOM = new \local_buildings\Room($rpi->roomid);
+            $RPI = new \local_roomsupport\RaspberryPi($rpi->id);
+            $BUILDING = new \local_roomsupport\Building($RPI->getBuildingId());
             
             $data = [];
-            $data['campusid'] = $BUILDING->getCampusId();
-            $data['buildingid'] = $BUILDING->getId();
+            $data['campusid'] = $RPI->getCampusId();
+            $data['buildingid'] = $RPI->getBuildingId();
             $data['rpiid'] = $rpi->id;
             $data['timecreated'] = time();
             $newCall = $DB->insert_record('local_roomsupport_call_log', $data);
-            
-            // The Building object is required for phone numbers and room name
-            $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
-            $ROOM = new \local_buildings\Room($rpi->roomid);
-            
 
-            $subject = 'Room ' . trim($ROOM->getBuildingShortName()) . ' ' . trim($ROOM->getRoomNumber()) . ' requires attention (log id: ' . $newCall . ')';
-            $message = 'A call from ' . trim($ROOM->getBuildingShortName()) . ' ' . trim($ROOM->getRoomNumber())
+            $subject = 'Room ' . trim($RPI->getRoomNumber()) . ' requires attention (log id: ' . $newCall . ')';
+            $message = 'A call from ' . trim($RPI->getRoomNumber())
                     . ' was initiated at ' . date('H:i', $data['timecreated']) . ' on ' . date('F d, Y ', $data['timecreated']);
 
             //Send email to ticketing system.
@@ -191,7 +186,7 @@ class local_roomsupport_external extends external_api {
             }
 
             //Send SMS message
-            if (($CFG->roomsupport_sms_apikey == true) && ($CFG->roomsupport_sms_agent_numbers == true)) {
+            if (($CFG->roomsupport_sms_apikey == true) && ($BUILDING->getAgentPhones())) {
                 $message .= "\n\n$CFG->wwwroot/local/roomsupport/agent/index.php";
                 $client = new SoapClient('http://www.smsgateway.ca/sendsms.asmx?WSDL');
                 $cellNumbers = $BUILDING->getAgentPhones();

@@ -89,7 +89,7 @@ class RaspberryPis extends Devices {
             $html .= $PI->getIp();
             $html .= '            </td>';
             $html .= '            <td>';
-            $html .= $PI->getBuildingShortName() . ' ' . $PI->getRoomNumber();
+            $html .=  $PI->getRoomNumber();
             $html .= '            </td>';
             $html .= '            <td>';
             if ($PI->getIsAlive()) {

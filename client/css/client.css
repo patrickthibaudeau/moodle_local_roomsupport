@@ -1,3 +1,7 @@
+body {
+    margin-bottom:50px;
+}
+
 .btn-fullscreen {
     width: 100%;
     min-height: 300px;
@@ -10,10 +14,15 @@
     margin-top: 5rem;
 }
 
-.navbar {
-    position: fixed; /* Set the navbar to fixed position */
-    bottom: 0; /* Position the navbar at the bottom of the page */
-    width: 100%; /* Full width */
+#footer {
+    position: fixed;
+    padding: 5px 15px;
+    height: 60px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin-bottom: 0px;
+    width: 100%;
 }
 
 .img-responsive {

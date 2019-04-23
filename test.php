@@ -50,8 +50,8 @@ function display_page() {
     //**********************
     //*** DISPLAY CONTENT **
     //**********************
-$OBJ = new \local_roomsupport\FaqAlerts();
-$OBJ->getResultsOpen();
+$OBJ = new \local_roomsupport\Building(3);
+print_object($OBJ->getServiceHours());
     //**********************
     //*** DISPLAY FOOTER ***
     //**********************

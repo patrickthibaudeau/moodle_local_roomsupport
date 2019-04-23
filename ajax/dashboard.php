@@ -73,7 +73,7 @@ switch ($action) {
         $id = required_param('id', PARAM_INT);
         $PI = new \local_roomsupport\RaspberryPi($id);
         $connection = ssh2_connect($PI->getIp());
-        ssh2_auth_password($connection, $CFG->roomsupport_pi_username, $CFG->roomsupport_pi_password);
+        ssh2_auth_password($connection, trim($PI->getPiUserName()), trim($PI->getPiPassword()));
         ssh2_exec($connection, '/sbin/reboot');
         echo true;
         break;

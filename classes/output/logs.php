@@ -75,7 +75,7 @@ class logs implements \renderable, \templatable {
             $RPI = new \local_roomsupport\RaspberryPi($r->rpiid);
             $FA = new \local_roomsupport\FaqAlert($r->id);
             $returnArray[$i]['id'] = $r->id;
-            $returnArray[$i]['room'] = $RPI->getBuildingShortName() . ' ' . $RPI->getRoomNumber();
+            $returnArray[$i]['room'] = $RPI->getRoomNumber();
             $returnArray[$i]['agent'] = $FA->getUserName();
             $returnArray[$i]['timecreated'] = $FA->getTimeCreatedHr();
             $returnArray[$i]['timereplied'] = $FA->getTimeRepliedHr();

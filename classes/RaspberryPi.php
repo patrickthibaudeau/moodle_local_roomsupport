@@ -56,24 +56,13 @@ class RaspberryPi extends Device {
      * @var string 
      */
     private $ip;
-    
+
     /**
      *
      * @var string 
      */
     private $faqId;
 
-    /**
-     *
-     * @var string 
-     */
-    private $buildingName;
-
-    /**
-     *
-     * @var string 
-     */
-    private $buildingShortName;
 
     /**
      *
@@ -116,13 +105,25 @@ class RaspberryPi extends Device {
      * @var string 
      */
     private $timeModifiedHr;
-    
+
     /**
      *
      * @var string 
      */
     private $dbTable;
-    
+
+    /**
+     *
+     * @var string 
+     */
+    private $piUserName;
+
+    /**
+     *
+     * @var string 
+     */
+    private $piPassword;
+
     /**
      *
      * @var bool 
@@ -138,7 +139,7 @@ class RaspberryPi extends Device {
      */
     public function __construct($id = 0) {
         global $CFG, $DB, $USER;
-        
+
         $this->dbTable = 'local_roomsupport_rpi';
 
         if ($id) {
@@ -146,28 +147,30 @@ class RaspberryPi extends Device {
         } else {
             $results = new \stdClass();
         }
-        
+
         $this->id = $id;
         $this->mac = $results->mac ?? '';
         $this->ip = $results->ip ?? '';
         $this->faqId = $results->faqid ?? 0;
         $this->buildingId = $results->buildingid ?? 0;
         $this->campusId = 0;
+        $this->piUsername = '';
+        $this->piPassword = '';
         if ($this->buildingId) {
             $BUILDING = new \local_roomsupport\Building($this->buildingId);
             $this->campusId = $BUILDING->getCampusId();
+            $this->piUsername = $BUILDING->getPiUsername();
+            $this->piPassword = $BUILDING->getPiPassword();
         }
         $this->roomId = $results->roomid ?? 0;
         if ($results->roomid) {
             $ROOM = new \local_buildings\Room($results->roomid);
-            $this->roomNumber = $ROOM->getBuildingShortName() . ' '. $ROOM->getRoomNumber();
+            $this->roomNumber = $ROOM->getBuildingShortName() . ' ' . $ROOM->getRoomNumber();
         }
-        $this->buildingName = $results->building_longname ?? 0;        
-        $this->buildingShortName = $results->building_shortname ?? 0; 
         $this->lastPing = $results->lastping ?? 0;
         if (isset($results->lastping)) {
             $this->lastPingHr = date('F d, Y', $results->lastping);
-            
+
             //Calculate if device is alive
             $difference = time() - $results->lastping;
             if ($difference <= 300) {
@@ -175,7 +178,7 @@ class RaspberryPi extends Device {
             } else {
                 $this->isAlive = false;
             }
-         } else {
+        } else {
             $this->lastPingHr = '';
             $this->isAlive = false;
         }
@@ -201,10 +204,10 @@ class RaspberryPi extends Device {
      */
     public function insert($data) {
         global $DB;
-        
+
         $data['timecreated'] = time();
         $data['timemodified'] = time();
-        
+
         $DB->insert_record($this->dbTable, $data);
     }
 
@@ -214,9 +217,9 @@ class RaspberryPi extends Device {
      */
     public function update($data) {
         global $DB;
-  
+
         $data['timemodified'] = time();
-        
+
         $DB->update_record($this->dbTable, $data);
         //Also update call_logs
         $callLogDataSql = "UPDATE {local_roomsupport_call_log} SET buildingid=" . $data['buildingid']
@@ -230,10 +233,10 @@ class RaspberryPi extends Device {
      */
     public function delete() {
         global $DB;
-        
-        $DB->delete_records($this->dbTable,['id' => $this->id] );
+
+        $DB->delete_records($this->dbTable, ['id' => $this->id]);
         //Also delete all call log data
-        $callLogDataSql = "DELETE {local_roomsupport_call_log} WHERE rpiid=" . $data['id'];
+        $callLogDataSql = "DELETE {local_roomsupport_call_log} WHERE rpiid=" . $this->id;
         $DB->execute($callLogDataSql);
     }
 
@@ -252,17 +255,9 @@ class RaspberryPi extends Device {
     public function getIp() {
         return $this->ip;
     }
-    
+
     public function getFaqId() {
         return $this->faqId;
-    }
-
-    public function getBuildingName() {
-        return $this->buildingName;
-    }
-
-    public function getBuildingShortName() {
-        return $this->buildingShortName;
     }
 
     public function getRoomNumber() {
@@ -309,5 +304,11 @@ class RaspberryPi extends Device {
         return $this->campusId;
     }
 
+    public function getPiUserName() {
+        return $this->piUserName;
+    }
 
+    public function getPiPassword() {
+        return $this->piPassword;
+    }
 }

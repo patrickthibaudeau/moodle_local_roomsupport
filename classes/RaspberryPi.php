@@ -236,8 +236,7 @@ class RaspberryPi extends Device {
 
         $DB->delete_records($this->dbTable, ['id' => $this->id]);
         //Also delete all call log data
-        $callLogDataSql = "DELETE {local_roomsupport_call_log} WHERE rpiid=" . $this->id;
-        $DB->execute($callLogDataSql);
+        $DB->delete_records('local_roomsupport_call_log', ['rpiid' => $this->id]);
     }
 
     public function getId() {

@@ -22,7 +22,7 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
             $('#changeCampusSelectContainer').show();
         });
 
-        $('#campusId').change(function () {
+        $('#changeCampusId').change(function () {
             var campusId = $(this).val();
             window.location = 'index.php?campusid=' + campusId;
         });

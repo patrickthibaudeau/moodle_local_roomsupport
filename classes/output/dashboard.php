@@ -33,10 +33,11 @@ class dashboard implements \renderable, \templatable {
         global $CFG, $USER, $DB;
 
         $campus = $DB->get_record('buildings_campus', ['id' => $this->campusId]);
-
+        $unassignedDevices = $this->getUnassignedRaspberryPis();
         $data = [
             'wwwroot' => $CFG->wwwroot,
-            'unassignedDevices' => $this->getUnassignedRaspberryPis(),
+            'unassignedDevices' => $unassignedDevices['devices'],
+            'unassignedDeviceCount' => $unassignedDevices['count'],
             'buildings' => $this->getBuildings(),
             'campusId' => $this->campusId,
             'campuses' => $this->getCampuses(),
@@ -97,8 +98,12 @@ class dashboard implements \renderable, \templatable {
                 unset($PI);
             }
         }
+        
+        $data = [];
+        $data['count'] = count($rpiArray);
+        $data['devices'] = $rpiArray;
 
-        return $rpiArray;
+        return $data;
     }
 
     /**

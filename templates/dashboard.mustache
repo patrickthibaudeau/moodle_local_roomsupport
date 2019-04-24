@@ -29,6 +29,23 @@
         </div>
     </div>
 </div>
+{{#unassignedDeviceCount}}
+<div class="row">
+    <div class="col">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h3>
+                    {{#str}}unassigned_devices, local_roomsupport{{/str}}
+
+                </h3>
+            </div>
+            <div class="card-body">
+                {{> local_roomsupport/unassigned_devices}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/unassignedDeviceCount}}
 <div class="row">
     <div class="col">
         <div class="card mt-2">
@@ -49,21 +66,7 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        <div class="card mt-2">
-            <div class="card-header">
-                <h3>
-                    {{#str}}unassigned_devices, local_roomsupport{{/str}}
 
-                </h3>
-            </div>
-            <div class="card-body">
-                {{> local_roomsupport/unassigned_devices}}
-            </div>
-        </div>
-    </div>
-</div>
 {{> local_roomsupport/delete_modal }}
 {{> local_roomsupport/edit_modal }}
 {{#js}}

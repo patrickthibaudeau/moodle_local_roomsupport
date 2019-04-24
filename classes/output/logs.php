@@ -19,7 +19,7 @@ class logs implements \renderable, \templatable {
     private $buildingId;
     private $campusId;
 
-    public function __construct($campusId, $buildingId = null ) {
+    public function __construct($campusId, $buildingId = 0 ) {
         $this->buildingId = $buildingId;
         $this->campusId = $campusId;
     }
@@ -62,7 +62,7 @@ class logs implements \renderable, \templatable {
                 . '{local_roomsupport_buildings} b On b.id = rpi.buildingid '
                 . 'WHERE b.campusid = ? ';
         $params = [$this->campusId];
-        if (!is_null($this->buildingId)) {
+        if ($this->buildingId != 0) {
             $sql .= ' AND b.id = ?';
             $params = [$this->campusId, $this->buildingId];
         } 

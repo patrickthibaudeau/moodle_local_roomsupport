@@ -133,7 +133,7 @@ $string['service_hours_help'] = 'You can add the hours your service is available
         . 'S=9:00-15:00'
         . '</code><br><br>'
         . 'Note the commas seperating the days.';
-$string['services_closed'] = 'No service currently available';
+$string['services_closed'] = 'Service desk is currently closed.';
 $string['shortest_time_to_reply'] = 'Fastest';
 $string['sms_settings'] = 'SMS Settings';
 $string['sms_apikey'] = 'API Key';
@@ -153,5 +153,6 @@ $string['unanswered'] = 'Unanswered';
 $string['unassigned_devices'] = 'Unassigned devices';
 $string['username'] = 'Username';
 $string['username_help'] = 'Raspberry Pi username. Please use the same name/password combination for all your Raspberry Pi\'s';
+$string['view_all'] = 'View all';
 $string['view_campus'] = 'View campus';
 

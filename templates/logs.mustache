@@ -4,6 +4,7 @@
             <div class="float-right">
                 <div class="form-inline">
                     <select id="buildingId" class="form-control mr-2" data-campusid="{{{campusId}}}">
+                        <option value="0">{{#str}}view_all, local_roomsupport{{/str}}</option>
                         {{#buildings}}
                         <option value="{{id}}" {{selected}}>{{name}}</option>
                         {{/buildings}}

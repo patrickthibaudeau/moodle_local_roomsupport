@@ -52,6 +52,13 @@ function display_page() {
     //**********************
 $OBJ = new \local_roomsupport\Building(3);
 print_object($OBJ->getServiceHours());
+
+//    $PI = new \local_roomsupport\RaspberryPi(3);
+//    $connection = ssh2_connect($PI->getIp());
+//    ssh2_auth_password($connection, trim($PI->getPiUserName()), trim($PI->getPiPassword()));
+//    ssh2_
+//    ssh2_exec($connection, '/sbin/reboot');
+    echo true;
     //**********************
     //*** DISPLAY FOOTER ***
     //**********************

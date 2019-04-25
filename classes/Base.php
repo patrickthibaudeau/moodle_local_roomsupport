@@ -185,7 +185,7 @@ class Base {
     public static function getListOfAgents() {
         global $CFG, $DB;
 
-        $role = $DB->get_record('role', array('shortname' => 'classroom_support_agent'));
+        $role = $DB->get_record('role', array('shortname' => 'room_support_agent'));
         $role_assignments = $DB->get_records('role_assignments', array('roleid' => $role->id));
         $userSelect = array();
         foreach ($role_assignments as $ra) {

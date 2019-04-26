@@ -34,6 +34,11 @@ class dashboard implements \renderable, \templatable {
 
         $campus = $DB->get_record('buildings_campus', ['id' => $this->campusId]);
         $unassignedDevices = $this->getUnassignedRaspberryPis();
+        $numberOfCampuses = count($this->getCampuses());
+        $showChangeCampusButton = false;
+        if ($numberOfCampuses > 1) {
+            $showChangeCampusButton = true;
+        }
         $data = [
             'wwwroot' => $CFG->wwwroot,
             'unassignedDevices' => $unassignedDevices['devices'],
@@ -41,6 +46,7 @@ class dashboard implements \renderable, \templatable {
             'buildings' => $this->getBuildings(),
             'campusId' => $this->campusId,
             'campuses' => $this->getCampuses(),
+            'showChangeCampusButton' => $showChangeCampusButton,
             'campusName' => $campus->name
         ];
 

@@ -8,9 +8,10 @@ and open the template in the editor.
 include_once('../config.php');
 global $CFG, $DB, $OUTPUT;
 $IP = $_SERVER['REMOTE_ADDR'];
+$MAC = $_GET['mac'];
 $lang = optional_param('lang', 'en', PARAM_TEXT);
 
-if ($device = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP])) {
+if ($device = $DB->get_record('local_roomsupport_rpi', ['mac' => $MAC])) {
     $FAQ = new \local_roomsupport\Faq($device->faqid);
 
     if (current_language() == 'en') {
@@ -28,6 +29,7 @@ if ($device = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP])) {
         <input type="hidden" id="wwwroot" value="<?php echo $CFG->wwwroot ?>">
         <input type="hidden" id="token" value="<?php echo $CFG->roomsupport_pi_token; ?>">
         <input type="hidden" id="ip" value="<?php echo $IP ?>">
+        <input type="hidden" id="mac" value="<?php echo $MAC ?>">
         <div class="container-fluid">
             <div id="displayContainer">
                 <div class="card mt-2 mb-5">
@@ -36,13 +38,12 @@ if ($device = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP])) {
                     </div>
                 </div>
             </div>
-
             <div id="footer" class="bg-light">
-                <a href="index.php" class="btn btn-outline-danger btn-lg mr-3" id="serviceClosed">
+                <a href="index.php?mac=<?php echo $MAC;?>" class="btn btn-outline-danger btn-lg mr-3" id="serviceClosed">
                     <?php echo get_string('services_closed', 'local_roomsupport'); ?>
                 </a>
                 <span class="float-right">
-                    <a href="index.php" id="itWorksBtn" class="btn btn-outline-success btn-lg mr-2"><?php echo get_string('it_works', 'local_roomsupport'); ?></a>
+                    <a href="index.php?mac=<?php echo $MAC;?>" id="itWorksBtn" class="btn btn-outline-success btn-lg mr-2"><?php echo get_string('it_works', 'local_roomsupport'); ?></a>
                     <a href="javascript:void(0);" class="btn btn-outline-danger btn-lg helpBtn"><?php echo get_string('help', 'local_roomsupport'); ?></a>
                 </span>
 
@@ -70,6 +71,7 @@ if ($device = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP])) {
                     <div class="modal-footer">
                         <button type="button" id="updateStatus" class="btn btn-danger" 
                                 data-ip="<?php echo $IP; ?>" 
+                                data-mac="<?php echo $MAC; ?>" 
                                 data-token="<?php echo $CFG->roomsupport_pi_token; ?>"
                                 data-wwwroot="<?php echo $CFG->wwwroot ?>"><?php echo get_string('close', 'local_roomsupport'); ?></button>
                     </div>

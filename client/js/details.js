@@ -2,6 +2,7 @@ var callInterval;
 var wwwroot = $('#wwwroot').val();
 var token = $('#token').val();
 var ip = $('#ip').val();
+var mac = $('#mac').val();
 
 function callHelp() {
     //Check to see if service hours are open
@@ -11,7 +12,7 @@ function callHelp() {
         $('.helpBtn').unbind();
         $.ajax({
             url: wwwroot + '/webservice/rest/server.php?wstoken=' + token,
-            data: '&wsfunction=roomsupport_get_help_call&ip=' + ip + '&moodlewsrestformat=json',
+            data: '&wsfunction=roomsupport_get_help_call&mac=' + mac + '&moodlewsrestformat=json',
             dataType: 'json',
             success: function (results) {
                 $('#helpModal').modal({
@@ -21,7 +22,7 @@ function callHelp() {
                 //Only show the close button once an agent has answered.
                 $('#updateStatus').hide();
                 $('#agentResponded').hide();
-                checkStatus(wwwroot, token, ip);
+                checkStatus(wwwroot, token, mac);
 
             },
             error: function (e) {
@@ -34,12 +35,13 @@ function callHelp() {
         var wwwroot = $(this).data('wwwroot');
         var token = $(this).data('token');
         var ip = $(this).data('ip');
+        var mac = $(this).data('mac');
         $.ajax({
             url: wwwroot + '/webservice/rest/server.php?wstoken=' + token,
-            data: '&wsfunction=roomsupport_update_status&ip=' + ip + '&moodlewsrestformat=json',
+            data: '&wsfunction=roomsupport_update_status&mac=' + mac + '&moodlewsrestformat=json',
             dataType: 'json',
             success: function (results) {
-                document.location = 'index.php';
+                document.location = 'index.php?mac=' + mac;
             },
             error: function (e) {
                 console.log(e);
@@ -49,10 +51,10 @@ function callHelp() {
 
 }
 
-function checkStatus(wwwroot, token, ip) {
+function checkStatus(wwwroot, token, mac) {
     $.ajax({
         url: wwwroot + '/webservice/rest/server.php?wstoken=' + token,
-        data: '&wsfunction=roomsupport_check_status&ip=' + ip + '&moodlewsrestformat=json',
+        data: '&wsfunction=roomsupport_check_status&mac=' + mac + '&moodlewsrestformat=json',
         dataType: 'json',
         success: function (results) {
             console.log(results);
@@ -76,10 +78,10 @@ function checkStatus(wwwroot, token, ip) {
 }
 
 function isServiceOpen() {
-    console.log(wwwroot + '/webservice/rest/server.php?wstoken=' + token + '&wsfunction=roomsupport_service_open&ip=' + ip + '&moodlewsrestformat=json');
+    console.log(wwwroot + '/webservice/rest/server.php?wstoken=' + token + '&wsfunction=roomsupport_service_open&mac=' + mac + '&moodlewsrestformat=json');
     $.ajax({
         url: wwwroot + '/webservice/rest/server.php?wstoken=' + token,
-        data: '&wsfunction=roomsupport_service_open&ip=' + ip + '&moodlewsrestformat=json',
+        data: '&wsfunction=roomsupport_service_open&mac=' + mac + '&moodlewsrestformat=json',
         dataType: 'json',
         success: function (results) {
             console.log(results[0].open)

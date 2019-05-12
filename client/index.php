@@ -8,6 +8,7 @@ and open the template in the editor.
 global $CFG;
 include_once('../config.php');
 $IP = $_SERVER['REMOTE_ADDR'];
+$MAC = $_GET['mac'];
 $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP]);
 $RPI = new \local_roomsupport\RaspberryPi($rpi->id);
 ?>
@@ -20,10 +21,10 @@ $RPI = new \local_roomsupport\RaspberryPi($rpi->id);
         <main class="container-fluid mt-10" role="main">            
             <div class="row">
                 <div class="col">
-                    <a href="details.php?lang=fr" class="btn btn-primary btn-fullscreen" ><?php echo get_string('request_help_fr', 'local_roomsupport'); ?></a>
+                    <a href="details.php?lang=fr&mac=<?php echo $MAC;?>" class="btn btn-primary btn-fullscreen" ><?php echo get_string('request_help_fr', 'local_roomsupport'); ?></a>
                 </div>
                 <div class="col">
-                    <a href="details.php?lang=en" class="btn btn-primary btn-fullscreen" ><?php echo get_string('request_help_en', 'local_roomsupport'); ?></a>
+                    <a href="details.php?lang=en&mac=<?php echo $MAC;?>" class="btn btn-primary btn-fullscreen" ><?php echo get_string('request_help_en', 'local_roomsupport'); ?></a>
                 </div>
             </div>
         </main>

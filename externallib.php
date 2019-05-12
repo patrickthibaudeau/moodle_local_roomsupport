@@ -123,8 +123,8 @@ class local_roomsupport_external extends external_api {
     public static function get_help_call_parameters() {
         return new external_function_parameters(
                 array(
-            'ip' => new external_value(PARAM_TEXT,
-                    'The IP address from the Raspberry PI'),
+            'mac' => new external_value(PARAM_TEXT,
+                    'The MAC address from the Raspberry PI'),
                 )
         );
     }
@@ -133,12 +133,12 @@ class local_roomsupport_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function get_help_call($ip) {
+    public static function get_help_call($mac) {
         global $CFG, $USER, $DB;
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::get_help_call_parameters(),
-                        array('ip' => $ip)
+                        array('mac' => $mac)
         );
 
         //Context validation
@@ -152,7 +152,7 @@ class local_roomsupport_external extends external_api {
             throw new moodle_exception('cannotaccesssystem', 'local_roomsupport');
         }
 
-        $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
+        $rpi = $DB->get_record('local_roomsupport_rpi', ['mac' => $mac]);
         //Check to see if a call is already in progress
         if (!$inProgress = $DB->get_record('local_roomsupport_call_log', ['rpiid' => $rpi->id, 'status' => 0])) {
             // The Building object is required for phone numbers and room name
@@ -312,8 +312,8 @@ class local_roomsupport_external extends external_api {
     public static function update_status_parameters() {
         return new external_function_parameters(
                 array(
-            'ip' => new external_value(PARAM_TEXT,
-                    'The IP address from the Raspberry PI'),
+            'mac' => new external_value(PARAM_TEXT,
+                    'The MAC address from the Raspberry PI'),
                 )
         );
     }
@@ -322,12 +322,12 @@ class local_roomsupport_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function update_status($ip) {
+    public static function update_status($mac) {
         global $USER, $DB;
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::update_status_parameters(),
-                        array('ip' => $ip)
+                        array('mac' => $mac)
         );
 
         //Context validation
@@ -341,7 +341,7 @@ class local_roomsupport_external extends external_api {
             throw new moodle_exception('cannotaccesssystem', 'local_roomsupport');
         }
 
-        $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
+        $rpi = $DB->get_record('local_roomsupport_rpi', ['mac' => $mac]);
         if ($inProgress = $DB->get_record('local_roomsupport_call_log', ['rpiid' => $rpi->id, 'status' => 0])) {
             $data = [];
             if ($inProgress->timereplied) {
@@ -387,8 +387,8 @@ class local_roomsupport_external extends external_api {
     public static function check_status_parameters() {
         return new external_function_parameters(
                 array(
-            'ip' => new external_value(PARAM_TEXT,
-                    'The IP address from the Raspberry PI'),
+            'mac' => new external_value(PARAM_TEXT,
+                    'The MAC address from the Raspberry PI'),
                 )
         );
     }
@@ -397,12 +397,12 @@ class local_roomsupport_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function check_status($ip) {
+    public static function check_status($mac) {
         global $USER, $DB;
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::check_status_parameters(),
-                        array('ip' => $ip)
+                        array('mac' => $mac)
         );
 
         //Context validation
@@ -416,7 +416,7 @@ class local_roomsupport_external extends external_api {
             throw new moodle_exception('cannotaccesssystem', 'local_roomsupport');
         }
 
-        $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
+        $rpi = $DB->get_record('local_roomsupport_rpi', ['mac' => $mac]);
         if ($inProgress = $DB->get_record('local_roomsupport_call_log', ['rpiid' => $rpi->id, 'status' => 0])) {
             if ($inProgress->timereplied) {
                 //Get agent name
@@ -459,8 +459,8 @@ class local_roomsupport_external extends external_api {
     public static function service_open_parameters() {
         return new external_function_parameters(
                 array(
-            'ip' => new external_value(PARAM_TEXT,
-                    'The IP address from the Raspberry PI'),
+            'mac' => new external_value(PARAM_TEXT,
+                    'The MAC address from the Raspberry PI'),
                 )
         );
     }
@@ -469,12 +469,12 @@ class local_roomsupport_external extends external_api {
      * Returns welcome message
      * @return string welcome message
      */
-    public static function service_open($ip) {
+    public static function service_open($mac) {
         global $USER, $DB;
         //Parameter validation
         //REQUIRED
         $params = self::validate_parameters(self::service_open_parameters(),
-                        array('ip' => $ip)
+                        array('mac' => $mac)
         );
 
         //Context validation
@@ -488,7 +488,7 @@ class local_roomsupport_external extends external_api {
             throw new moodle_exception('cannotaccesssystem', 'local_roomsupport');
         }
         
-        $rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $ip]);
+        $rpi = $DB->get_record('local_roomsupport_rpi', ['mac' => $mac]);
         $BUILDING = new \local_roomsupport\Building($rpi->buildingid);
 
         $return = [];

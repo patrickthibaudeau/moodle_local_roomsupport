@@ -9,7 +9,7 @@ global $CFG;
 include_once('../config.php');
 $IP = $_SERVER['REMOTE_ADDR'];
 $MAC = $_GET['mac'];
-$rpi = $DB->get_record('local_roomsupport_rpi', ['ip' => $IP]);
+$rpi = $DB->get_record('local_roomsupport_rpi', ['mac' => $MAC]);
 $RPI = new \local_roomsupport\RaspberryPi($rpi->id);
 ?>
 <html>

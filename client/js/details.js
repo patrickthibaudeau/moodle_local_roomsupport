@@ -61,7 +61,7 @@ function checkStatus(wwwroot, token, mac) {
             if (results[0].agent == "false") {
                 clearInterval(callInterval);
                 callInterval = setInterval(function () {
-                    checkStatus(wwwroot, token, ip);
+                    checkStatus(wwwroot, token, mac);
                 }, 2000);
             } else {
                 var data = results[0];

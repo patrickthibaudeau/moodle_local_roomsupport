@@ -64,6 +64,8 @@ $string['room_'] = 'Salle';
 $string['room_not_set'] = 'Salle non définie';
 $string['room_number'] = 'Numéro de salle';
 $string['save'] = 'Enregistrer';
+$string['services_closed'] = 'Le bureau d\'aide est présentement fermé.';
 $string['status'] = 'Status';
+
 
 $string['roomsupport:rpi'] = 'Raspberry PI access';

@@ -74,7 +74,7 @@ class local_roomsupport_external extends external_api {
         }
 
         //Search if exists
-        if (!$macExist = $DB->get_record('local_roomsupport_rpi', ['mac' => $mac])) {
+        if (!$macExist = $DB->get_record('local_roomsupport_rpi', ['mac' => trim($mac)])) {
             $data = [];
             $data['mac'] = $mac;
             $data['ip'] = $ip;

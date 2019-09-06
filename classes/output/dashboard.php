@@ -63,7 +63,7 @@ class dashboard implements \renderable, \templatable {
 
         $RPIS = new \local_roomsupport\RaspberryPis($buildingId);
         $rpis = $RPIS->getResults();
-        
+
         $rpiArray = [];
         $i = 0;
         foreach ($rpis as $pi) {
@@ -73,6 +73,16 @@ class dashboard implements \renderable, \templatable {
             $rpiArray[$i]['ip'] = $PI->getIp();
             $rpiArray[$i]['room'] = $PI->getRoomNumber();
             $rpiArray[$i]['status'] = $PI->getIsAlive();
+            If ($PI->getIgnoreDevice() == true) {
+                $ignoreYes = true;
+                $ignoreNo = false;
+            } else {
+                $ignoreYes = false;
+                $ignoreNo = true;
+            }
+            $rpiArray[$i]['ignore-no'] = $ignoreNo;
+            $rpiArray[$i]['ignore-yes'] = $ignoreYes;
+
             $i++;
             unset($PI);
         }
@@ -104,7 +114,7 @@ class dashboard implements \renderable, \templatable {
                 unset($PI);
             }
         }
-        
+
         $data = [];
         $data['count'] = count($rpiArray);
         $data['devices'] = $rpiArray;

@@ -86,6 +86,12 @@ class RaspberryPi extends Device {
      *
      * @var int 
      */
+    private $ignoreDevice;
+
+    /**
+     *
+     * @var int 
+     */
     private $timeCreated;
 
     /**
@@ -156,6 +162,7 @@ class RaspberryPi extends Device {
         $this->campusId = 0;
         $this->piUsername = '';
         $this->piPassword = '';
+        $this->ignoreDevice = $results->ignoredevice ?? 0;
         if ($this->buildingId) {
             $BUILDING = new \local_roomsupport\Building($this->buildingId);
             $this->campusId = $BUILDING->getCampusId();
@@ -309,5 +316,9 @@ class RaspberryPi extends Device {
 
     public function getPiPassword() {
         return $this->piPassword;
+    }
+    
+    function getIgnoreDevice() {
+        return $this->ignoreDevice;
     }
 }

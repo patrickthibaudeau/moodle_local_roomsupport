@@ -27,6 +27,15 @@ switch ($action) {
         $campusId = required_param('campusid', PARAM_INT);
         $PI = new \local_roomsupport\RaspberryPi($id);
         $FAQS = new \local_roomsupport\Faqs($campusId);
+
+        If ($PI->getIgnoreDevice() == true) {
+            $ignoreYes = true;
+            $ignoreNo = false;
+        } else {
+            $ignoreYes = false;
+            $ignoreNo = true;
+        }
+
         $faqs = $FAQS->getResults();
         $faqArray = [];
         $i = 0;
@@ -42,6 +51,8 @@ switch ($action) {
         $BUILDING = new \local_roomsupport\Building($PI->getBuildingId());
         $data['rooms'] = \local_roomsupport\Base::getRooms($BUILDING->getBuildingId());
         $data['faqs'] = $faqArray;
+        $data['ignoreno'] = $ignoreNo;
+        $data['ignoreyes'] = $ignoreYes;
 
         echo json_encode($data);
         break;
@@ -51,6 +62,7 @@ switch ($action) {
         $buildingId = optional_param('buildingid', '', PARAM_TEXT);
         $roomId = optional_param('roomid', '', PARAM_TEXT);
         $faqId = required_param('faqid', PARAM_INT);
+        $ignoreDevice = required_param('ignoredevice', PARAM_INT);
 
         $data = [];
         $data['id'] = $id;
@@ -58,6 +70,7 @@ switch ($action) {
         $data['buildingid'] = $buildingId;
         $data['roomid'] = $roomId;
         $data['faqid'] = $faqId;
+        $data['ignoredevice'] = $ignoreDevice;
 
         $PI = new \local_roomsupport\RaspberryPi($id);
         $PI->update($data);

@@ -34,6 +34,13 @@
                                         {{/faqs}}
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="ignoreDevice">{{#str}}ignore_device, local_roomsupport{{/str}}</label><br>
+                                    <select class="form-control" id="ignoreDevice" name="ignoredevice">                                        
+                                        <option value="0" {{{ignore-no}}}>{{#str}}no{{/str}}</option>
+                                        <option value="1" {{{ignore-yes}}}>{{#str}}yes{{/str}}</option>
+                                    </select>
+                                </div>
                             </form>
                         </div>
                     </div>

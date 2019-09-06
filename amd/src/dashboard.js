@@ -57,6 +57,14 @@ define(['jquery', 'jqueryui', 'local_roomsupport/select2'], function ($, jqui, s
                     for (var i = 0; i < Object.keys(faqs).length; i++) {
                         $("<option value='" + faqs[i].id + "'>" + faqs[i].name + "</option>").appendTo("#faqId");
                     }
+
+                    if(results.ignoreyes == true) {
+                        $('#ignoreDevice option[value=1]').attr('selected',true);
+                        $('#ignoreDevice option[value=0]').attr('selected',false);
+                    } else {
+                        $('#ignoreDevice option[value=0]').attr('selected',true);
+                        $('#ignoreDevice option[value=1]').attr('selected',false);
+                    }
                     $('#faqId').val(results.faqid);
                     $('#buildingId').select2();
                     $('#roomId').select2();

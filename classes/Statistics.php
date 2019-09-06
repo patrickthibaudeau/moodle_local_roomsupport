@@ -21,7 +21,7 @@ class Statistics {
      */
     public static function getDeviceCalls($campusId, $buildingId, $from = null, $to = null) {
         global $DB;
-        $deviceSql = "SELECT DISTINCT(rpiid) as id FROM {local_roomsupport_call_log} WHERE campusid = ? AND buildingid=?";
+        $deviceSql = "SELECT DISTINCT(rpiid) as id FROM {local_roomsupport_call_log} WHERE campusid = ? AND buildingid=? AND ignoredevice = 0";
 
         $params = [$campusId, $buildingId];        
         $timeSql = ''; 

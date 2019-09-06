@@ -163,6 +163,7 @@ class local_roomsupport_external extends external_api {
             $data['campusid'] = $RPI->getCampusId();
             $data['buildingid'] = $RPI->getBuildingId();
             $data['rpiid'] = $rpi->id;
+            $data['ignoredevice'] = $RPI->getIgnoreDevice();
             $data['timecreated'] = time();
             $newCall = $DB->insert_record('local_roomsupport_call_log', $data);
 

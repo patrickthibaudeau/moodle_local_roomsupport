@@ -145,7 +145,7 @@ function xmldb_local_roomsupport_upgrade($oldversion) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
-        
+
         // Define field campusid to be added to local_roomsupport_call_log.
         $table = new xmldb_table('local_roomsupport_call_log');
         $field = new xmldb_field('buildingid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'campusid');
@@ -157,6 +157,36 @@ function xmldb_local_roomsupport_upgrade($oldversion) {
 
         // Roomsupport savepoint reached.
         upgrade_plugin_savepoint(true, 2019042100, 'local', 'roomsupport');
+    }
+
+    if ($oldversion < 2019090600) {
+
+        // Define field ignoredevice to be added to local_roomsupport_rpi.
+        $table = new xmldb_table('local_roomsupport_rpi');
+        $field = new xmldb_field('ignoredevice', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'lastping');
+
+        // Conditionally launch add field ignoredevice.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Roomsupport savepoint reached.
+        upgrade_plugin_savepoint(true, 2019090600, 'local', 'roomsupport');
+    }
+
+    if ($oldversion < 2019090601) {
+
+        // Define field ignoredevice to be added to local_roomsupport_call_log.
+        $table = new xmldb_table('local_roomsupport_call_log');
+        $field = new xmldb_field('ignoredevice', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'status');
+
+        // Conditionally launch add field ignoredevice.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Roomsupport savepoint reached.
+        upgrade_plugin_savepoint(true, 2019090601, 'local', 'roomsupport');
     }
 
     return true;

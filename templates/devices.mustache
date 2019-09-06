@@ -1,31 +1,37 @@
 <div class="card-body">   
-
-    {{#devices}}
-    <div class="col">
-        <div class="card {{#status}}online{{/status}}{{^status}}offline{{/status}} mb-2">
-            <div class="card-header ">
-                {{{room}}}
+    <div class="accordion" id="deviceAccordion">
+        {{#devices}}
+        <div class="card">
+            <div class="card-header" id="heading{{{id}}}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{{id}}}" aria-expanded="true" aria-controls="collapse{{{id}}}">
+                        {{{room}}}
+                    </button>
+                </h2>
             </div>
-            <div class="card-body">
-                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#detailsModal{{{id}}}">
-                    <i class="fa fa-info-circle" ></i>
-                </button>
 
-                <a href="javascript:void(0);" class="editRpi btn btn-outline-primary" data-id="{{{id}}}" title="{{#str}}edit, local_roomsupport{{/str}}">
-                    <i class="fa fa-edit" ></i>
-                </a>
+            <div id="collapse{{{id}}}" class="collapse" aria-labelledby="heading{{{id}}}" data-parent="#deviceAccordion">
+                <div class="card-body">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#detailsModal{{{id}}}">
+                        <i class="fa fa-info-circle" ></i>
+                    </button>
 
-                <!--                <a href="javascript:void(0);"  class="rebootRpi btn btn-outline-success" data-id="{{{id}}}" title="{{#str}}reboot, local_roomsupport{{/str}}">
-                                    <i class="fa fa-power-off" ></i>
-                                </a>-->
+                    <a href="javascript:void(0);" class="editRpi btn btn-outline-primary" data-id="{{{id}}}" title="{{#str}}edit, local_roomsupport{{/str}}">
+                        <i class="fa fa-edit" ></i>
+                    </a>
 
-                <a href="javascript:void(0);"  class="deleteRpi btn btn-outline-danger" data-id="{{{id}}}" title="{{#str}}delete, local_roomsupport{{/str}}">
-                    <i class="fa fa-trash"></i>
-                </a>
+                    <!--                <a href="javascript:void(0);"  class="rebootRpi btn btn-outline-success" data-id="{{{id}}}" title="{{#str}}reboot, local_roomsupport{{/str}}">
+                                        <i class="fa fa-power-off" ></i>
+                                    </a>-->
 
-                {{> local_roomsupport/details_modal }}
+                    <a href="javascript:void(0);"  class="deleteRpi btn btn-outline-danger" data-id="{{{id}}}" title="{{#str}}delete, local_roomsupport{{/str}}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+
+                    {{> local_roomsupport/details_modal }}
+                </div>
             </div>
         </div>
+        {{/devices}}
     </div>
-    {{/devices}}
 </div>

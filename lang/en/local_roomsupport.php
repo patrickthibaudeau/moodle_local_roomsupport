@@ -75,6 +75,7 @@ $string['faqs'] = 'FAQs';
 $string['faq'] = 'FAQ';
 $string['help'] = 'Help!';
 $string['id'] = 'Id #';
+$string['ignore_device'] = 'Ignore device in statistics';
 $string['in_coming_requests'] = 'Incoming requests';
 $string['ip_address'] = 'IP Address';
 $string['it_works'] = 'It works!';

@@ -72,13 +72,13 @@ class Statistics {
             $params = [$campusId, $buildingId, $from, $to];
         }
         
-        $agentsSql = "SELECT DISTINCT(agentid) as id FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid= ? $betweenTime";
+        $agentsSql = "SELECT DISTINCT(agentid) as id FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid= ?  AND ignoredevice = 0 $betweenTime";
         $agents = $DB->get_records_sql($agentsSql, $params);
 
         $dataSets = [];
         $labels = [];
         foreach ($agents as $a) {
-            $countSql = "SELECT COUNT(agentid) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? AND agentid = ?";
+            $countSql = "SELECT COUNT(agentid) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=?  AND agentid = ?  AND ignoredevice = 0";
             $params = [$campusId, $buildingId, $a->id];
             if ($user = $DB->get_record('user', ['id' => $a->id])) {
                 $name = fullname($user);
@@ -110,13 +110,13 @@ class Statistics {
         }
 
         $averageSql = "SELECT AVG(diff) as average_time FROM "
-                . "(SELECT timereplied-timecreated as diff FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0) count ";
+                . "(SELECT timereplied-timecreated as diff FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0  AND ignoredevice = 0) count ";
 
-        $minimumSql = "SELECT MIN(timereplied-timecreated) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0";
+        $minimumSql = "SELECT MIN(timereplied-timecreated) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0  AND ignoredevice = 0";
 
-        $maximumSql = "SELECT MAX(timereplied-timecreated) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0";
+        $maximumSql = "SELECT MAX(timereplied-timecreated) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0  AND ignoredevice = 0";
 
-        $totalCallsSql = "SELECT COUNT(id) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0";
+        $totalCallsSql = "SELECT COUNT(id) as total FROM {local_roomsupport_call_log} WHERE campusid=? AND buildingid=? $betweenTime AND timereplied != 0  AND ignoredevice = 0";
 
         $average = $DB->get_record_sql($averageSql, $params);
         $minimum = $DB->get_record_sql($minimumSql, $params);

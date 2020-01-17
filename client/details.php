@@ -93,6 +93,7 @@ if ($device = $DB->get_record('local_roomsupport_rpi', ['mac' => $MAC])) {
         });
 
         callHelp();
+        idleTime();
     });
 </script>
 </body>
